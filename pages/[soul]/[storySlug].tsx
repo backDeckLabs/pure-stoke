@@ -83,15 +83,34 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
   }
 }
 
+const ALL_STORIES_QUERY = `
+  query GetAllStories {
+    stories {
+      slug
+      soul {
+        slug
+      }
+    }
+  }
+`
+
+type AllStoryPages = {
+  stories: {
+    slug: string
+    soul: {
+      slug: string
+    }
+  }[]
+}
+
 export async function getStaticPaths() {
-  // const pages = (await cmsRequest({
-  //   query: ALL_LEGAL_PAGES_QUERY,
-  // })) as AllLegalPages
+  const pages = (await cmsRequest({
+    query: ALL_STORIES_QUERY,
+  })) as AllStoryPages
 
-  // const paths = pages?.allLegalPages.map((page) => ({
-  //   params: { slug: page.slug },
-  // }))
+  const paths = pages?.stories.map((story) => ({
+    params: { storySlug: story.slug, soul: story.soul.slug },
+  }))
 
-  const paths = [{ params: { soul: 'dave', storySlug: 'test' } }]
   return { paths, fallback: 'blocking' }
 }
