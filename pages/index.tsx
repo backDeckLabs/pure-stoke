@@ -19,8 +19,8 @@ export default function Home() {
     >
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <h1 className="text-5xl">Pure Stoke</h1>
-        <Link href="/story" className="text-xl underline">
-          Go to the story page
+        <Link href="/daveydawg" className="text-xl underline">
+          Go to Davey Dawg
         </Link>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
