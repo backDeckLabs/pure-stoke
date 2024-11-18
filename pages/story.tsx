@@ -1,7 +1,8 @@
 import { cmsRequest } from '@/lib/hygraph'
+import { StoryQueryResponse } from '@/lib/story-utils'
+import Image from 'next/image'
 
-export default function About({ pageData }) {
-  console.log('page data: ', pageData)
+export default function About({ pageData }: { pageData: StoryQueryResponse }) {
   return (
     <div className="p-8">
       <h1 className="text-5xl text-center">{pageData.story.title}</h1>
@@ -11,7 +12,7 @@ export default function About({ pageData }) {
             return <p key={index}>{section.text}</p>
           } else if (section.__typename === 'ImageBlock') {
             return (
-              <img
+              <Image
                 key={index}
                 src={section.image.url}
                 alt="A cool image"
@@ -25,7 +26,7 @@ export default function About({ pageData }) {
   )
 }
 
-const ABOUT_PAGE_QUERY = `
+const STORY_QUERY = `
   query GetStory {
     story(where: {slug: "first-test-story-stoke"}) {
     title
@@ -47,8 +48,8 @@ const ABOUT_PAGE_QUERY = `
 `
 
 export async function getStaticProps() {
-  const pageData = await cmsRequest({
-    query: ABOUT_PAGE_QUERY,
+  const pageData = await cmsRequest<StoryQueryResponse>({
+    query: STORY_QUERY,
   })
 
   return {
