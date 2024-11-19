@@ -2,6 +2,11 @@ import { cmsRequest } from '@/lib/hygraph'
 import { SoulQueryResponse } from '@/types/cms-response-types'
 import Link from 'next/link'
 import { GetStaticPropsContext } from 'next'
+import {
+  ALL_SOULS_QUERY,
+  AllSoulPages,
+  SOUL_PAGE_QUERY,
+} from '@/lib/soul-page-utils'
 
 type SoulLandingPageProps = {
   pageData: SoulQueryResponse
@@ -21,6 +26,13 @@ export default function SoulLandingPage({
       </Link>
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <h1 className="text-5xl">{pageData.soul.name}</h1>
+        <Link
+          href={`/${soulSlug}/share-the-stoke`}
+          className="text-xl underline"
+        >
+          Share the Stoke
+        </Link>
+        <h3 className="text-3xl">Stories</h3>
         {pageData.soul.story.map((story, index) => (
           <Link
             key={index}
@@ -38,18 +50,6 @@ export default function SoulLandingPage({
   )
 }
 
-const SOUL_QUERY = `
-  query GetSoul($slug: String!) {
-      soul(where: {slug: $slug}) {
-      name
-      story {
-        title
-        slug
-      }
-    }
-  }
-`
-
 export async function getStaticProps({ params }: GetStaticPropsContext) {
   const slug = params?.soul
 
@@ -60,9 +60,15 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
   }
 
   const pageData = await cmsRequest<SoulQueryResponse>({
-    query: SOUL_QUERY,
+    query: SOUL_PAGE_QUERY,
     variables: { slug: slug },
   })
+
+  if (!pageData.soul) {
+    return {
+      notFound: true,
+    }
+  }
 
   return {
     props: {
@@ -70,20 +76,6 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
       soulSlug: slug,
     },
   }
-}
-
-const ALL_SOULS_QUERY = `
-  query GetAllSouls {
-    souls {
-      slug
-    }
-  }
-`
-
-type AllSoulPages = {
-  souls: {
-    slug: string
-  }[]
 }
 
 export async function getStaticPaths() {
@@ -94,8 +86,6 @@ export async function getStaticPaths() {
   const paths = pages?.souls.map((soul) => ({
     params: { soul: soul.slug },
   }))
-
-  console.log('soul paths: ', paths)
 
   return { paths, fallback: 'blocking' }
 }

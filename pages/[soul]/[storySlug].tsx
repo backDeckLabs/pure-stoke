@@ -76,6 +76,12 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     variables: { slug: slug },
   })
 
+  if (!pageData.story) {
+    return {
+      notFound: true,
+    }
+  }
+
   return {
     props: {
       pageData,

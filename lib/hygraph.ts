@@ -1,14 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { GraphQLClient } from 'graphql-request'
 
-const READ_API_URL = process.env.HYGRAPH_READ_API_URL as string
+const CMS_API_URL = process.env.NEXT_PUBLIC_HYGRAPH_API_URL as string
 
-const hygraphClient = new GraphQLClient(READ_API_URL, {
+const hygraphClient = new GraphQLClient(CMS_API_URL, {
   headers: {
-    Authorization: `Bearer ${process.env.HYGRAPH_API_TOKEN}`,
+    Authorization: `Bearer ${process.env.NEXT_PUBLIC_HYGRAPH_API_TOKEN}`,
   },
 })
 
+/**
+ * Function for performing Graph QL queries to the CMS
+ */
 export function cmsRequest<T>({
   query,
   variables = {},
