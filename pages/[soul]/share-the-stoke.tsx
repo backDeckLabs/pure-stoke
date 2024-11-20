@@ -1,5 +1,7 @@
+import ImageUploader from '@/components/patterns/ImageUploader'
 import { emailValidationPattern, stringToSlug } from '@/lib/form-utils'
 import { cmsRequest } from '@/lib/hygraph'
+import { parseImageFile, readFile } from '@/lib/photo-utils'
 import {
   ALL_SOULS_QUERY,
   AllSoulPages,
@@ -8,6 +10,7 @@ import {
 import { SoulQueryResponse } from '@/types/cms-response-types'
 import { GetStaticPropsContext } from 'next'
 import { useRouter } from 'next/router'
+import { ChangeEvent } from 'react'
 import { useForm } from 'react-hook-form'
 
 export default function ShareTheStoke() {
@@ -48,7 +51,7 @@ export default function ShareTheStoke() {
             create: [
               {
                 TextBlock: {
-                  text: data.story,
+                  text: data.storyText,
                 },
               },
             ],
@@ -125,14 +128,10 @@ export default function ShareTheStoke() {
               className="text-black"
               rows={8}
               cols={20}
-              {...register('story', {
-                required: {
-                  value: true,
-                  message: 'Email is required',
-                },
-              })}
+              {...register('storyText', {})}
             />
           </label>
+          <ImageUploader />
           <button className="bg-white text-black py-2 px-2" type="submit">
             Share Story
           </button>
