@@ -1,20 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
-import { cmsRequest, uploadImageToHygraph } from '@/lib/hygraph'
+import { uploadImage } from '@/lib/image-upload'
 import { ChangeEvent, useState } from 'react'
 
 export default function ImageUploader() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState('')
   const [error, setError] = useState('')
-
-  const UPLOAD_IMAGE_MUTATION = `
-    mutation UploadAsset($file: Upload!) {
-      createAsset(data: { file: $file }) {
-        id
-        url
-      }
-    }
-  `
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -39,20 +31,10 @@ export default function ImageUploader() {
       setPreviewUrl(preview)
 
       // Upload to Hygraph
-      const asset = await uploadImageToHygraph(file)
-      // const asset = await uploadImage(file)
-      console.log('asset is: ', asset)
+      // TODO: emit the file to the parent component and upload it at another time
+      const response = await uploadImage(file)
+      console.log('image uploaded? ', response)
     }
-  }
-
-  const uploadImage = async (file: File) => {
-    const uploadResponse = await cmsRequest({
-      query: UPLOAD_IMAGE_MUTATION,
-      variables: {
-        file,
-      },
-    })
-    console.log('update response is: ', uploadResponse)
   }
 
   return (

@@ -1,7 +1,6 @@
 import ImageUploader from '@/components/patterns/ImageUploader'
 import { emailValidationPattern, stringToSlug } from '@/lib/form-utils'
 import { cmsRequest } from '@/lib/hygraph'
-import { parseImageFile, readFile } from '@/lib/photo-utils'
 import {
   ALL_SOULS_QUERY,
   AllSoulPages,
@@ -10,7 +9,6 @@ import {
 import { SoulQueryResponse } from '@/types/cms-response-types'
 import { GetStaticPropsContext } from 'next'
 import { useRouter } from 'next/router'
-import { ChangeEvent } from 'react'
 import { useForm } from 'react-hook-form'
 
 export default function ShareTheStoke() {
@@ -129,6 +127,15 @@ export default function ShareTheStoke() {
               rows={8}
               cols={20}
               {...register('storyText', {})}
+            />
+          </label>
+          <label className="flex flex-col gap-2">
+            <span>Image</span>
+            <input
+              type="file"
+              className="text-black"
+              accept="image/png, image/jpeg, image/heic, image/heif"
+              onChange={handleUserAddedPhoto}
             />
           </label>
           <ImageUploader />
