@@ -2,6 +2,7 @@
 export type Story = {
   title: string
   slug: string
+  authorName: string
   soul: Soul
   sections: Array<TextBlock | ImageBlock>
 }
@@ -30,3 +31,23 @@ export type Soul = {
 
 export type SoulQueryResponse = { soul: Soul }
 /** END SOUL TYPES */
+
+/** ASSET UPLOAD TYPES */
+export type CreateAssetMutationResponse = {
+  createAsset: {
+    id: string
+    upload: {
+      requestPostData: {
+        url: string
+        date: string
+        key: string
+        signature: string
+        algorithm: string
+        policy: string
+        credential: string
+        securityToken: string
+      }
+    }
+  }
+}
+/** END ASSET UPLOAD TYPES */

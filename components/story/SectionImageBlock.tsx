@@ -1,12 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
-import { uploadImage } from '@/lib/image-upload'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, FC, useEffect, useState } from 'react'
 
-export default function ImageUploader() {
+export interface SectionImageBlockProps {
+  onChange: (value: File | null) => void
+}
+
+const SectionImageBlock: FC<SectionImageBlockProps> = ({ onChange }) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState('')
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    onChange(selectedImage)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedImage])
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -29,16 +37,18 @@ export default function ImageUploader() {
       // Create a preview URL
       const preview = URL.createObjectURL(file)
       setPreviewUrl(preview)
-
-      // Upload to Hygraph
-      // TODO: emit the file to the parent component and upload it at another time
-      const response = await uploadImage(file)
-      console.log('image uploaded? ', response)
     }
   }
 
   return (
-    <div>
+    <div
+      style={{
+        border: '1px solid #eee',
+        borderStyle: 'dashed',
+        borderRadius: '16px',
+        padding: '1rem',
+      }}
+    >
       <input type="file" accept="image/*" onChange={handleFileChange} />
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {previewUrl && (
@@ -51,3 +61,5 @@ export default function ImageUploader() {
     </div>
   )
 }
+
+export default SectionImageBlock

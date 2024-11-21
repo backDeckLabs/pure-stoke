@@ -1,10 +1,11 @@
+import { CreateAssetMutationResponse } from '@/types/cms-response-types'
+import { cmsRequest } from './hygraph'
+
 export const uploadImage = async (file: File) => {
   const { name: fileName } = file
 
   // Step 1: create initial asset in Hygraph
-  const assetResponse = await cmsRequest<{
-    createAsset: { id: string; upload: any }
-  }>({
+  const assetResponse = await cmsRequest<CreateAssetMutationResponse>({
     query: createAssetMutation,
     variables: {
       fileName,
@@ -14,7 +15,7 @@ export const uploadImage = async (file: File) => {
   // TODO: add error handling here
 
   // Step 2: Upload the asset to the signed URL
-  const { upload } = assetResponse.createAsset
+  const { id, upload } = assetResponse.createAsset
   const { requestPostData } = upload
   const formData = new FormData()
   formData.append('X-Amz-Date', requestPostData.date)
@@ -30,8 +31,10 @@ export const uploadImage = async (file: File) => {
     method: 'POST',
     body: formData,
   })
-  // console.log('upload response is: ', uploadResponse)
-  return uploadResponse['ok']
+  console.log('upload response is: ', uploadResponse)
+  // TODO: add error handling here
+
+  return id
 }
 
 const createAssetMutation = `
