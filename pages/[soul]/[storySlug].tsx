@@ -15,6 +15,7 @@ export default function StoryPage({
         {`< ${pageData.story.soul.name}`}
       </Link>
       <h1 className="text-5xl text-center">{pageData.story.title}</h1>
+      <p className="text-center">By {pageData.story.authorName}</p>
       <div className="mt-8 mx-auto max-w-4xl flex flex-col gap-6">
         {pageData.story.sections.map((section, index) => {
           if (section.__typename === 'TextBlock') {
@@ -42,6 +43,7 @@ const STORY_QUERY = `
     story(where: {slug: $slug}) {
       title
       slug
+      authorName
       soul {
         slug
         name
