@@ -2,7 +2,7 @@ export const SOUL_PAGE_QUERY = `
   query GetSoul($slug: String!) {
       soul(where: {slug: $slug}) {
       name
-      story {
+      story(first: 1000) {
         title
         slug
       }
