@@ -1,5 +1,8 @@
+import { ContentContainer } from '@/components/layout/ContentContainer'
+import PageWrapper from '@/components/layout/PageWrapper'
 import { cmsRequest, throttledCmsRequest } from '@/lib/hygraph'
 import { StoryQueryResponse } from '@/types/cms-response-types'
+import { Center, Heading, Text } from '@chakra-ui/react'
 import { GetStaticPropsContext } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -10,31 +13,38 @@ export default function StoryPage({
   pageData: StoryQueryResponse
 }) {
   return (
-    <div>
-      <Link href={`/${pageData.story.soul.slug}`}>
-        {`< ${pageData.story.soul.name}`}
-      </Link>
-      <h1>{pageData.story.title}</h1>
-      <p>By {pageData.story.authorName}</p>
-      <div>
-        {pageData.story.sections.map((section, index) => {
-          if (section.__typename === 'TextBlock') {
-            return <p key={index}>{section.text}</p>
-          } else if (section.__typename === 'ImageBlock') {
-            return (
-              <Image
-                key={index}
-                src={section.image.url}
-                alt="A cool image"
-                className="mx-auto"
-                width={1200}
-                height={800}
-              />
-            )
-          }
-        })}
-      </div>
-    </div>
+    <PageWrapper>
+      <ContentContainer>
+        <Link href={`/${pageData.story.soul.slug}`}>
+          {`< ${pageData.story.soul.name}`}
+        </Link>
+        <Center gap="4" flexDir="column">
+          <Heading size="5xl" textAlign="center">
+            {pageData.story.title}
+          </Heading>
+          <Text>By {pageData.story.authorName}</Text>
+        </Center>
+
+        <div>
+          {pageData.story.sections.map((section, index) => {
+            if (section.__typename === 'TextBlock') {
+              return <p key={index}>{section.text}</p>
+            } else if (section.__typename === 'ImageBlock') {
+              return (
+                <Image
+                  key={index}
+                  src={section.image.url}
+                  alt="A cool image"
+                  className="mx-auto"
+                  width={1200}
+                  height={800}
+                />
+              )
+            }
+          })}
+        </div>
+      </ContentContainer>
+    </PageWrapper>
   )
 }
 

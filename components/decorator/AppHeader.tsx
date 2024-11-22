@@ -13,13 +13,12 @@ const AppHeader: FC = () => {
     <Box
       position="relative"
       as="header"
-      h={5}
-      borderBottom="1px"
-      borderColor="grey.500"
+      borderBottom="1px solid"
+      borderColor="gray.300"
       zIndex={{ base: '1302', md: '1302' }}
     >
       <ContentContainer h="full">
-        <Flex align="center" justify="space-between" h="full">
+        <Flex align="center" justify="space-between" h="full" py="3">
           <Link href={routeMap.home()} aria-label="Home Page">
             <Text>PURE STOKE</Text>
           </Link>

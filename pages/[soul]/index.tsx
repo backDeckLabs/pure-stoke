@@ -7,6 +7,11 @@ import {
   AllSoulPages,
   SOUL_PAGE_QUERY,
 } from '@/lib/soul-page-utils'
+import PageWrapper from '@/components/layout/PageWrapper'
+import { ContentContainer } from '@/components/layout/ContentContainer'
+import { Center, Grid, Heading } from '@chakra-ui/react'
+import { routeMap } from '@/lib/route-map'
+import { Button } from '@/components/ui/button'
 
 type SoulLandingPageProps = {
   pageData: SoulQueryResponse
@@ -18,24 +23,31 @@ export default function SoulLandingPage({
   soulSlug,
 }: SoulLandingPageProps) {
   return (
-    <div>
-      <Link href="/">{`< Home`}</Link>
-      <main>
-        <h1>{pageData.soul.name}</h1>
-        <Link href={`/${soulSlug}/share-the-stoke`}>Share the Stoke</Link>
-        <h3>Stories</h3>
-        {pageData.soul.story.map((story, index) => (
-          <Link
-            key={index}
-            href={`/${soulSlug}/${story.slug}`}
-            className="text-xl underline"
-          >
-            {story.title}
+    <PageWrapper>
+      <ContentContainer>
+        <Heading size="5xl" textAlign="center">
+          {pageData.soul.name}
+        </Heading>
+        <Center mt="6" mb="10">
+          <Link href={routeMap.shareTheStoke(soulSlug)}>
+            <Button>Share the Stoke</Button>
           </Link>
-        ))}
-      </main>
-      <footer>This is the footer</footer>
-    </div>
+        </Center>
+
+        <Heading size="3xl">Stories</Heading>
+        <Grid gridTemplateColumns="repeat(3, 1fr)" gap="4" mt="6">
+          {pageData.soul.story.map((story, index) => (
+            <Link
+              key={index}
+              href={`/${soulSlug}/${story.slug}`}
+              className="text-xl underline"
+            >
+              {story.title}
+            </Link>
+          ))}
+        </Grid>
+      </ContentContainer>
+    </PageWrapper>
   )
 }
 

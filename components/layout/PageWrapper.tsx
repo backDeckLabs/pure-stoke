@@ -1,4 +1,4 @@
-import { Box } from '@ghostnote/ui'
+import { Box } from '@chakra-ui/react'
 import React, { FC, ReactNode } from 'react'
 
 export interface PageWrapperProps {

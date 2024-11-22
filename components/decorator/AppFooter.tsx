@@ -7,7 +7,7 @@ const AppFooter: FC = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <Box as="footer">
+    <Box as="footer" borderTop="1px solid" borderColor="gray.300">
       <ContentContainer>
         <Flex
           position="relative"
@@ -17,7 +17,7 @@ const AppFooter: FC = () => {
           gap="4"
         >
           <Text>
-            © {currentYear} {LEGAL_COMPANY_NAME} All rights reserved.
+            © {currentYear} {LEGAL_COMPANY_NAME}, All rights reserved.
           </Text>
         </Flex>
       </ContentContainer>
