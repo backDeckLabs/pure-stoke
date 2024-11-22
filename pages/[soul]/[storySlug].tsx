@@ -67,6 +67,8 @@ const STORY_QUERY = `
 export async function getStaticProps({ params }: GetStaticPropsContext) {
   const slug = params?.storySlug
 
+  console.log('build story: ', slug)
+
   if (!params || !slug) {
     return {
       notFound: true,
@@ -77,6 +79,8 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     query: STORY_QUERY,
     variables: { slug: slug },
   })
+
+  console.log('page data: ', pageData)
 
   if (!pageData.story) {
     return {
