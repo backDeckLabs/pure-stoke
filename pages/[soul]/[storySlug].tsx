@@ -1,4 +1,4 @@
-import { cmsRequest } from '@/lib/hygraph'
+import { cmsRequest, throttledCmsRequest } from '@/lib/hygraph'
 import { StoryQueryResponse } from '@/types/cms-response-types'
 import { GetStaticPropsContext } from 'next'
 import Image from 'next/image'
@@ -67,20 +67,15 @@ const STORY_QUERY = `
 export async function getStaticProps({ params }: GetStaticPropsContext) {
   const slug = params?.storySlug
 
-  console.log('build story: ', slug)
-
   if (!params || !slug) {
     return {
       notFound: true,
     }
   }
 
-  const pageData = await cmsRequest<StoryQueryResponse>({
-    query: STORY_QUERY,
-    variables: { slug: slug },
+  const pageData = await throttledCmsRequest<StoryQueryResponse>(STORY_QUERY, {
+    slug,
   })
-
-  console.log('page data: ', pageData)
 
   if (!pageData.story) {
     return {

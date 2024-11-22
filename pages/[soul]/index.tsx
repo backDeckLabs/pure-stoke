@@ -1,4 +1,4 @@
-import { cmsRequest } from '@/lib/hygraph'
+import { cmsRequest, throttledCmsRequest } from '@/lib/hygraph'
 import { SoulQueryResponse } from '@/types/cms-response-types'
 import Link from 'next/link'
 import { GetStaticPropsContext } from 'next'
@@ -59,10 +59,10 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     }
   }
 
-  const pageData = await cmsRequest<SoulQueryResponse>({
-    query: SOUL_PAGE_QUERY,
-    variables: { slug: slug },
-  })
+  const pageData = await throttledCmsRequest<SoulQueryResponse>(
+    SOUL_PAGE_QUERY,
+    { slug }
+  )
 
   if (!pageData.soul) {
     return {
