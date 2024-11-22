@@ -18,21 +18,12 @@ export default function SoulLandingPage({
   soulSlug,
 }: SoulLandingPageProps) {
   return (
-    <div
-      className={`grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <Link href="/" className="text-xl underline">
-        {`< Home`}
-      </Link>
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <h1 className="text-5xl">{pageData.soul.name}</h1>
-        <Link
-          href={`/${soulSlug}/share-the-stoke`}
-          className="text-xl underline"
-        >
-          Share the Stoke
-        </Link>
-        <h3 className="text-3xl">Stories</h3>
+    <div>
+      <Link href="/">{`< Home`}</Link>
+      <main>
+        <h1>{pageData.soul.name}</h1>
+        <Link href={`/${soulSlug}/share-the-stoke`}>Share the Stoke</Link>
+        <h3>Stories</h3>
         {pageData.soul.story.map((story, index) => (
           <Link
             key={index}
@@ -43,9 +34,7 @@ export default function SoulLandingPage({
           </Link>
         ))}
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        This is the footer
-      </footer>
+      <footer>This is the footer</footer>
     </div>
   )
 }

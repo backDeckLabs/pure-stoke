@@ -10,13 +10,13 @@ export default function StoryPage({
   pageData: StoryQueryResponse
 }) {
   return (
-    <div className="p-8">
-      <Link href={`/${pageData.story.soul.slug}`} className="text-xl underline">
+    <div>
+      <Link href={`/${pageData.story.soul.slug}`}>
         {`< ${pageData.story.soul.name}`}
       </Link>
-      <h1 className="text-5xl text-center">{pageData.story.title}</h1>
-      <p className="text-center">By {pageData.story.authorName}</p>
-      <div className="mt-8 mx-auto max-w-4xl flex flex-col gap-6">
+      <h1>{pageData.story.title}</h1>
+      <p>By {pageData.story.authorName}</p>
+      <div>
         {pageData.story.sections.map((section, index) => {
           if (section.__typename === 'TextBlock') {
             return <p key={index}>{section.text}</p>
