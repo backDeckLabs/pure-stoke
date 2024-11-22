@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
+import { Box } from '@chakra-ui/react'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
 
 export interface SectionImageBlockProps {
@@ -41,14 +42,7 @@ const SectionImageBlock: FC<SectionImageBlockProps> = ({ onChange }) => {
   }
 
   return (
-    <div
-      style={{
-        border: '1px solid #eee',
-        borderStyle: 'dashed',
-        borderRadius: '16px',
-        padding: '1rem',
-      }}
-    >
+    <Box border="1px dashed" borderColor="gray.300" borderRadius="16px" p="4">
       <input type="file" accept="image/*" onChange={handleFileChange} />
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {previewUrl && (
@@ -58,7 +52,7 @@ const SectionImageBlock: FC<SectionImageBlockProps> = ({ onChange }) => {
           style={{ maxWidth: '300px', marginTop: '20px' }}
         />
       )}
-    </div>
+    </Box>
   )
 }
 

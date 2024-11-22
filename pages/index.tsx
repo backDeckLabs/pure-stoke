@@ -2,16 +2,31 @@ import { ContentContainer } from '@/components/layout/ContentContainer'
 import PageWrapper from '@/components/layout/PageWrapper'
 import { Button } from '@/components/ui/button'
 import { routeMap } from '@/lib/route-map'
-import { Heading } from '@chakra-ui/react'
+import { Box, Heading } from '@chakra-ui/react'
 import Link from 'next/link'
 
 export default function Home() {
   return (
     <PageWrapper>
       <ContentContainer textAlign="center">
-        <Heading size="3xl">Pure Stoke</Heading>
+        <Box position="relative">
+          <Heading size="7xl" fontSize="100px" letterSpacing="50px">
+            STOKE
+          </Heading>
+          <Heading
+            position="absolute"
+            top="50%"
+            left="51%"
+            transform="translate(-50%, -50%)"
+            size="2xl"
+            letterSpacing="90px"
+          >
+            PURE
+          </Heading>
+        </Box>
+
         <Link href={routeMap.soul('daveydawg')}>
-          <Button mt="6">Davey Dawg</Button>
+          <Button mt="20">Davey Dawg</Button>
         </Link>
       </ContentContainer>
     </PageWrapper>

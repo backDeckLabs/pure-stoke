@@ -12,17 +12,20 @@ interface ButtonLoadingProps {
   loadingText?: React.ReactNode
 }
 
-export interface ButtonProps extends ChakraButtonProps, ButtonLoadingProps {}
+export interface ButtonProps extends ChakraButtonProps, ButtonLoadingProps {
+  colorPalette?: 'teal' | 'purple' | 'cyan'
+}
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  function Button(props, ref) {
+  function Button({ colorPalette = 'teal', ...props }, ref) {
     const { loading, disabled, loadingText, children, ...rest } = props
     return (
       <ChakraButton
         disabled={loading || disabled}
         ref={ref}
         {...rest}
-        colorPalette="purple"
+        colorPalette={colorPalette}
+        fontWeight="bold"
       >
         {loading && !loadingText ? (
           <>

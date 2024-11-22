@@ -2,7 +2,7 @@ import { ContentContainer } from '@/components/layout/ContentContainer'
 import PageWrapper from '@/components/layout/PageWrapper'
 import { cmsRequest, throttledCmsRequest } from '@/lib/hygraph'
 import { StoryQueryResponse } from '@/types/cms-response-types'
-import { Center, Heading, Text } from '@chakra-ui/react'
+import { Center, Heading, Stack, Text } from '@chakra-ui/react'
 import { GetStaticPropsContext } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -24,11 +24,13 @@ export default function StoryPage({
           </Heading>
           <Text>By {pageData.story.authorName}</Text>
         </Center>
+      </ContentContainer>
 
-        <div>
+      <ContentContainer text mt="10">
+        <Stack gap="8">
           {pageData.story.sections.map((section, index) => {
             if (section.__typename === 'TextBlock') {
-              return <p key={index}>{section.text}</p>
+              return <Text key={index}>{section.text}</Text>
             } else if (section.__typename === 'ImageBlock') {
               return (
                 <Image
@@ -42,7 +44,7 @@ export default function StoryPage({
               )
             }
           })}
-        </div>
+        </Stack>
       </ContentContainer>
     </PageWrapper>
   )

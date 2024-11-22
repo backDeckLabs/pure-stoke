@@ -1,3 +1,4 @@
+import { Textarea } from '@chakra-ui/react'
 import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 
 export interface SectionTextBlockProps {
@@ -19,12 +20,12 @@ const SectionTextBlock: FC<SectionTextBlockProps> = ({ onChange }) => {
 
   return (
     <div>
-      <textarea
+      <Textarea
         value={value}
         onChange={handleTextChange}
         placeholder="Type your story here"
-        style={{ width: '100%', height: '200px' }}
-        className="text-black"
+        w="full"
+        h="200px"
       />
     </div>
   )
