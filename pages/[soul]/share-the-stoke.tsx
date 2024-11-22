@@ -1,7 +1,7 @@
 import SectionImageBlock from '@/components/story/SectionImageBlock'
 import SectionTextBlock from '@/components/story/SectionTextBlock'
 import { emailValidationPattern, stringToSlug } from '@/lib/form-utils'
-import { cmsRequest } from '@/lib/hygraph'
+import { cmsRequest, throttledCmsRequest } from '@/lib/hygraph'
 import { uploadImage } from '@/lib/image-upload'
 import {
   ALL_SOULS_QUERY,
@@ -233,10 +233,10 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     }
   }
 
-  const pageData = await cmsRequest<SoulQueryResponse>({
-    query: SOUL_PAGE_QUERY,
-    variables: { slug: slug },
-  })
+  const pageData = await throttledCmsRequest<SoulQueryResponse>(
+    SOUL_PAGE_QUERY,
+    { slug }
+  )
 
   if (!pageData.soul) {
     return {
