@@ -91,6 +91,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
   return {
     props: {
       pageData,
+      revalidate: 60,
     },
   }
 }
