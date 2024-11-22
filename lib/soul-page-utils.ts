@@ -12,7 +12,7 @@ export const SOUL_PAGE_QUERY = `
 
 export const ALL_SOULS_QUERY = `
   query GetAllSouls {
-    souls {
+    souls(first: 1000) {
       slug
     }
   }

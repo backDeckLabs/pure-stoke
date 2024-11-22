@@ -93,7 +93,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
 
 const ALL_STORIES_QUERY = `
   query GetAllStories {
-    stories {
+    stories(first: 1000) {
       slug
       soul {
         slug
