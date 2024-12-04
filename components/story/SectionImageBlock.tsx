@@ -2,12 +2,17 @@
 /* eslint-disable @next/next/no-img-element */
 import { Box } from '@chakra-ui/react'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
+import { CloseButton } from '../ui/close-button'
 
 export interface SectionImageBlockProps {
   onChange: (value: File | null) => void
+  onRemove: () => void
 }
 
-const SectionImageBlock: FC<SectionImageBlockProps> = ({ onChange }) => {
+const SectionImageBlock: FC<SectionImageBlockProps> = ({
+  onChange,
+  onRemove,
+}) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState('')
   const [error, setError] = useState('')
@@ -42,16 +47,30 @@ const SectionImageBlock: FC<SectionImageBlockProps> = ({ onChange }) => {
   }
 
   return (
-    <Box border="1px dashed" borderColor="gray.300" borderRadius="16px" p="4">
+    <Box
+      position="relative"
+      border="1px dashed"
+      borderColor="gray.300"
+      borderRadius="4px"
+      p="4"
+    >
       <input type="file" accept="image/*" onChange={handleFileChange} />
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {previewUrl && (
         <img
           src={previewUrl}
           alt="Preview"
-          style={{ maxWidth: '300px', marginTop: '20px' }}
+          style={{ width: '100%', marginTop: '20px' }}
         />
       )}
+      <CloseButton
+        position="absolute"
+        top="1"
+        right="1"
+        bg="gray.100"
+        size="xs"
+        onClick={onRemove}
+      />
     </Box>
   )
 }
