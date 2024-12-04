@@ -50,7 +50,7 @@ const SectionImageBlock: FC<SectionImageBlockProps> = ({
     <Box
       position="relative"
       border="1px dashed"
-      borderColor="gray.300"
+      borderColor={{ base: 'gray.300', _dark: 'gray.600' }}
       borderRadius="4px"
       p="4"
     >
@@ -67,8 +67,9 @@ const SectionImageBlock: FC<SectionImageBlockProps> = ({
         position="absolute"
         top="1"
         right="1"
-        bg="gray.100"
         size="xs"
+        variant="subtle"
+        colorPalette="gray"
         onClick={onRemove}
       />
     </Box>

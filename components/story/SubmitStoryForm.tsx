@@ -42,6 +42,7 @@ type StorySectionType = 'TextBlock' | 'ImageBlock'
 type StorySectionValue = string | File | null
 
 type StorySection = {
+  id: number
   type: StorySectionType
   value: StorySectionValue
 }
@@ -64,14 +65,12 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
   const handleAddSection = (type: StorySectionType) => {
     setStorySections((prev) => [
       ...prev,
-      { type, value: type === 'TextBlock' ? '' : null },
+      { id: Date.now(), type, value: type === 'TextBlock' ? '' : null },
     ])
   }
 
-  const handleRemoveSection = (index: number) => {
-    console.log('remove index: ', index)
-    // const updatedSections = storySections.filter((_, i) => i !== index)
-    setStorySections((prev) => prev.filter((_, i) => i !== index))
+  const handleRemoveSection = (id: number) => {
+    setStorySections((prev) => prev.filter((section) => section.id !== id))
   }
 
   const handleSectionChange = (index: number, newValue: StorySectionValue) => {
@@ -250,16 +249,16 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
         {/* Dynamic Sections */}
         <Box mt="4">
           {storySections.map((section, index) => (
-            <Box key={index} mb="2">
+            <Box key={section.id} mb="2">
               {section.type === 'TextBlock' ? (
                 <SectionTextBlock
                   onChange={(val) => handleSectionChange(index, val)}
-                  onRemove={() => handleRemoveSection(index)}
+                  onRemove={() => handleRemoveSection(section.id)}
                 />
               ) : (
                 <SectionImageBlock
                   onChange={(val) => handleSectionChange(index, val)}
-                  onRemove={() => handleRemoveSection(index)}
+                  onRemove={() => handleRemoveSection(section.id)}
                 />
               )}
             </Box>

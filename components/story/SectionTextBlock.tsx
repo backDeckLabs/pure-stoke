@@ -45,8 +45,9 @@ const SectionTextBlock: FC<SectionTextBlockProps> = ({
         position="absolute"
         top="1"
         right="1"
-        bg="gray.100"
         size="xs"
+        variant="subtle"
+        colorPalette="gray"
         onClick={onRemove}
       />
     </Box>
