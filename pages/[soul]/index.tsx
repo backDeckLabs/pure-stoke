@@ -6,17 +6,13 @@ import {
   ALL_SOULS_QUERY,
   AllSoulPages,
   SOUL_PAGE_QUERY,
+  SoulLandingPageProps,
 } from '@/lib/soul-page-utils'
 import PageWrapper from '@/components/layout/PageWrapper'
 import { ContentContainer } from '@/components/layout/ContentContainer'
 import { Center, Grid, Heading } from '@chakra-ui/react'
 import { routeMap } from '@/lib/route-map'
 import { Button } from '@/components/ui/button'
-
-type SoulLandingPageProps = {
-  pageData: SoulQueryResponse
-  soulSlug: string
-}
 
 export default function SoulLandingPage({
   pageData,

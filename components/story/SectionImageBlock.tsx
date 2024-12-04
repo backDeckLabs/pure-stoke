@@ -1,8 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
-import { Box } from '@chakra-ui/react'
+import { Box, Flex, Text } from '@chakra-ui/react'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { CloseButton } from '../ui/close-button'
+import {
+  FileUploadList,
+  FileUploadRoot,
+  FileUploadTrigger,
+} from '../ui/file-upload'
+import { Button } from '../ui/button'
+import { LuUpload } from 'react-icons/lu'
 
 export interface SectionImageBlockProps {
   onChange: (value: File | null) => void
@@ -54,7 +61,19 @@ const SectionImageBlock: FC<SectionImageBlockProps> = ({
       borderRadius="4px"
       p="4"
     >
-      <input type="file" accept="image/*" onChange={handleFileChange} />
+      <FileUploadRoot accept="image/*" onChange={handleFileChange}>
+        <Flex gap="2">
+          <FileUploadTrigger>
+            <Button variant="surface" colorPalette="gray">
+              <LuUpload /> Upload photo
+            </Button>
+          </FileUploadTrigger>
+          <FileUploadList showSize borderColor="transparent" w="full" />
+        </Flex>
+      </FileUploadRoot>
+      <Text fontSize="xs" mt="2">
+        Any image type, up to 50MB
+      </Text>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {previewUrl && (
         <img

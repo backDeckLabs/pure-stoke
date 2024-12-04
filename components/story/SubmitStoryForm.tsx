@@ -265,7 +265,7 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
           ))}
         </Box>
 
-        <Flex my="5" gap="2">
+        <Flex mt="10" gap="2">
           <Button
             type="button"
             colorPalette="cyan"
@@ -289,7 +289,7 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
         </Flex>
 
         <Center>
-          <Button type="submit" loading={submissionLoading} mt="8" w="full">
+          <Button type="submit" loading={submissionLoading} mt="10" w="full">
             Share Story
           </Button>
         </Center>

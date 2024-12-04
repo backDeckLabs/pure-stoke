@@ -1,11 +1,12 @@
 import { ContentContainer } from '@/components/layout/ContentContainer'
 import PageWrapper from '@/components/layout/PageWrapper'
+import BackLink from '@/components/ui/BackLink'
 import { cmsRequest, throttledCmsRequest } from '@/lib/hygraph'
+import { routeMap } from '@/lib/route-map'
 import { StoryQueryResponse } from '@/types/cms-response-types'
 import { Center, Heading, Stack, Text } from '@chakra-ui/react'
 import { GetStaticPropsContext } from 'next'
 import Image from 'next/image'
-import Link from 'next/link'
 
 export default function StoryPage({
   pageData,
@@ -15,9 +16,10 @@ export default function StoryPage({
   return (
     <PageWrapper>
       <ContentContainer>
-        <Link href={`/${pageData.story.soul.slug}`}>
-          {`< ${pageData.story.soul.name}`}
-        </Link>
+        <BackLink
+          href={routeMap.soul(pageData.story.soul.slug)}
+          label={pageData.story.soul.name}
+        />
         <Center gap="4" flexDir="column">
           <Heading size="5xl" textAlign="center">
             {pageData.story.title}
