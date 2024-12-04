@@ -8,6 +8,16 @@ export const SOUL_PAGE_QUERY = `
       story(first: 1000) {
         title
         slug
+        authorName
+        sections {
+          ... on ImageBlock {
+            __typename
+            id
+            image {
+              url(transformation: {image: {resize: {width: 300}}})
+            }
+          }
+        }
       }
     }
   }
