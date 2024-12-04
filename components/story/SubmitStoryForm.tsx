@@ -175,7 +175,7 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
             </List.Item>
             <List.Item>
               Feel free to submit as many stories as you want, with as many
-              photos as you want...and don't leave out any details.
+              photos as you want...and don&apos;t leave out any details.
             </List.Item>
             <List.Item>Submissions from all ages are welcome.</List.Item>
           </List.Root>

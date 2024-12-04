@@ -18,8 +18,6 @@ export default function ShareTheStoke({ pageData }: SoulLandingPageProps) {
   const router = useRouter()
   const { soul } = router.query
 
-  console.log('pageData', pageData)
-
   return (
     <PageWrapper>
       <ContentContainer>
