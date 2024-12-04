@@ -1,12 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
+import { Box, Flex, Text } from '@chakra-ui/react'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
+import { CloseButton } from '../ui/close-button'
+import {
+  FileUploadList,
+  FileUploadRoot,
+  FileUploadTrigger,
+} from '../ui/file-upload'
+import { Button } from '../ui/button'
+import { LuUpload } from 'react-icons/lu'
 
 export interface SectionImageBlockProps {
   onChange: (value: File | null) => void
+  onRemove: () => void
 }
 
-const SectionImageBlock: FC<SectionImageBlockProps> = ({ onChange }) => {
+const SectionImageBlock: FC<SectionImageBlockProps> = ({
+  onChange,
+  onRemove,
+}) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState('')
   const [error, setError] = useState('')
@@ -41,24 +54,44 @@ const SectionImageBlock: FC<SectionImageBlockProps> = ({ onChange }) => {
   }
 
   return (
-    <div
-      style={{
-        border: '1px solid #eee',
-        borderStyle: 'dashed',
-        borderRadius: '16px',
-        padding: '1rem',
-      }}
+    <Box
+      position="relative"
+      border="1px dashed"
+      borderColor={{ base: 'gray.300', _dark: 'gray.600' }}
+      borderRadius="4px"
+      p="4"
     >
-      <input type="file" accept="image/*" onChange={handleFileChange} />
+      <FileUploadRoot accept="image/*" onChange={handleFileChange}>
+        <Flex gap="2">
+          <FileUploadTrigger>
+            <Button variant="surface" colorPalette="gray">
+              <LuUpload /> Upload photo
+            </Button>
+          </FileUploadTrigger>
+          <FileUploadList showSize borderColor="transparent" w="full" />
+        </Flex>
+      </FileUploadRoot>
+      <Text fontSize="xs" mt="2">
+        Any image type, up to 50MB
+      </Text>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {previewUrl && (
         <img
           src={previewUrl}
           alt="Preview"
-          style={{ maxWidth: '300px', marginTop: '20px' }}
+          style={{ width: '100%', marginTop: '20px' }}
         />
       )}
-    </div>
+      <CloseButton
+        position="absolute"
+        top="1"
+        right="1"
+        size="xs"
+        variant="subtle"
+        colorPalette="gray"
+        onClick={onRemove}
+      />
+    </Box>
   )
 }
 

@@ -1,10 +1,22 @@
+import { Box, chakra, useRecipe } from '@chakra-ui/react'
 import React, { ChangeEvent, FC, useEffect, useState } from 'react'
+import AutoResize from 'react-textarea-autosize'
+import { CloseButton } from '../ui/close-button'
 
 export interface SectionTextBlockProps {
   onChange: (value: string) => void
+  onRemove: () => void
 }
 
-const SectionTextBlock: FC<SectionTextBlockProps> = ({ onChange }) => {
+const StyledAutoResize = chakra(AutoResize)
+
+const SectionTextBlock: FC<SectionTextBlockProps> = ({
+  onChange,
+  onRemove,
+}) => {
+  const recipe = useRecipe({ key: 'textarea' })
+  const styles = recipe({ size: 'lg', variant: 'outline' })
+
   const [value, setValue] = useState('')
 
   useEffect(() => {
@@ -18,15 +30,27 @@ const SectionTextBlock: FC<SectionTextBlockProps> = ({ onChange }) => {
   }
 
   return (
-    <div>
-      <textarea
+    <Box position="relative">
+      <StyledAutoResize
         value={value}
         onChange={handleTextChange}
-        placeholder="Type your story here"
-        style={{ width: '100%', height: '200px' }}
-        className="text-black"
+        placeholder="So this one time..."
+        minH="100px"
+        resize="none"
+        overflow="hidden"
+        lineHeight="inherit"
+        css={styles}
       />
-    </div>
+      <CloseButton
+        position="absolute"
+        top="1"
+        right="1"
+        size="xs"
+        variant="subtle"
+        colorPalette="gray"
+        onClick={onRemove}
+      />
+    </Box>
   )
 }
 

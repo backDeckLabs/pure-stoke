@@ -1,8 +1,12 @@
+import { ContentContainer } from '@/components/layout/ContentContainer'
+import PageWrapper from '@/components/layout/PageWrapper'
+import BackLink from '@/components/ui/BackLink'
 import { cmsRequest, throttledCmsRequest } from '@/lib/hygraph'
+import { routeMap } from '@/lib/route-map'
 import { StoryQueryResponse } from '@/types/cms-response-types'
+import { Center, Heading, Stack, Text } from '@chakra-ui/react'
 import { GetStaticPropsContext } from 'next'
 import Image from 'next/image'
-import Link from 'next/link'
 
 export default function StoryPage({
   pageData,
@@ -10,31 +14,41 @@ export default function StoryPage({
   pageData: StoryQueryResponse
 }) {
   return (
-    <div className="p-8">
-      <Link href={`/${pageData.story.soul.slug}`} className="text-xl underline">
-        {`< ${pageData.story.soul.name}`}
-      </Link>
-      <h1 className="text-5xl text-center">{pageData.story.title}</h1>
-      <p className="text-center">By {pageData.story.authorName}</p>
-      <div className="mt-8 mx-auto max-w-4xl flex flex-col gap-6">
-        {pageData.story.sections.map((section, index) => {
-          if (section.__typename === 'TextBlock') {
-            return <p key={index}>{section.text}</p>
-          } else if (section.__typename === 'ImageBlock') {
-            return (
-              <Image
-                key={index}
-                src={section.image.url}
-                alt="A cool image"
-                className="mx-auto"
-                width={1200}
-                height={800}
-              />
-            )
-          }
-        })}
-      </div>
-    </div>
+    <PageWrapper>
+      <ContentContainer>
+        <BackLink
+          href={routeMap.soul(pageData.story.soul.slug)}
+          label={pageData.story.soul.name}
+        />
+        <Center gap="4" flexDir="column">
+          <Heading size="5xl" textAlign="center">
+            {pageData.story.title}
+          </Heading>
+          <Text>By {pageData.story.authorName}</Text>
+        </Center>
+      </ContentContainer>
+
+      <ContentContainer text mt="10">
+        <Stack gap="8">
+          {pageData.story.sections.map((section, index) => {
+            if (section.__typename === 'TextBlock') {
+              return <Text key={index}>{section.text}</Text>
+            } else if (section.__typename === 'ImageBlock') {
+              return (
+                <Image
+                  key={index}
+                  src={section.image.url}
+                  alt="A cool image"
+                  className="mx-auto"
+                  width={1200}
+                  height={800}
+                />
+              )
+            }
+          })}
+        </Stack>
+      </ContentContainer>
+    </PageWrapper>
   )
 }
 

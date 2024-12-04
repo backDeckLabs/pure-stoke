@@ -6,47 +6,44 @@ import {
   ALL_SOULS_QUERY,
   AllSoulPages,
   SOUL_PAGE_QUERY,
+  SoulLandingPageProps,
 } from '@/lib/soul-page-utils'
-
-type SoulLandingPageProps = {
-  pageData: SoulQueryResponse
-  soulSlug: string
-}
+import PageWrapper from '@/components/layout/PageWrapper'
+import { ContentContainer } from '@/components/layout/ContentContainer'
+import { Center, Grid, Heading } from '@chakra-ui/react'
+import { routeMap } from '@/lib/route-map'
+import { Button } from '@/components/ui/button'
 
 export default function SoulLandingPage({
   pageData,
   soulSlug,
 }: SoulLandingPageProps) {
   return (
-    <div
-      className={`grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <Link href="/" className="text-xl underline">
-        {`< Home`}
-      </Link>
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <h1 className="text-5xl">{pageData.soul.name}</h1>
-        <Link
-          href={`/${soulSlug}/share-the-stoke`}
-          className="text-xl underline"
-        >
-          Share the Stoke
-        </Link>
-        <h3 className="text-3xl">Stories</h3>
-        {pageData.soul.story.map((story, index) => (
-          <Link
-            key={index}
-            href={`/${soulSlug}/${story.slug}`}
-            className="text-xl underline"
-          >
-            {story.title}
+    <PageWrapper>
+      <ContentContainer>
+        <Heading size="5xl" textAlign="center">
+          {pageData.soul.name}
+        </Heading>
+        <Center mt="6" mb="10">
+          <Link href={routeMap.shareTheStoke(soulSlug)}>
+            <Button>Share the Stoke</Button>
           </Link>
-        ))}
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        This is the footer
-      </footer>
-    </div>
+        </Center>
+
+        <Heading size="3xl">Stories</Heading>
+        <Grid gridTemplateColumns="repeat(3, 1fr)" gap="4" mt="6">
+          {pageData.soul.story.map((story, index) => (
+            <Link
+              key={index}
+              href={`/${soulSlug}/${story.slug}`}
+              className="text-xl underline"
+            >
+              {story.title}
+            </Link>
+          ))}
+        </Grid>
+      </ContentContainer>
+    </PageWrapper>
   )
 }
 
