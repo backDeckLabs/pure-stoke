@@ -2,9 +2,10 @@ import { SoulQueryResponse } from '@/types/cms-response-types'
 
 export const SOUL_PAGE_QUERY = `
   query GetSoul($slug: String!) {
-      soul(where: {slug: $slug}) {
+    soul(where: {slug: $slug}) {
       name
       slug
+      blurb
       story(first: 1000) {
         title
         slug

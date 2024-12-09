@@ -18,8 +18,8 @@ import {
   Flex,
   Grid,
   Heading,
+  Stack,
   Text,
-  Theme,
 } from '@chakra-ui/react'
 import { routeMap } from '@/lib/route-map'
 import { Button } from '@/components/ui/button'
@@ -28,27 +28,28 @@ export default function SoulLandingPage({
   pageData,
   soulSlug,
 }: SoulLandingPageProps) {
-  console.log('pageData is: ', pageData)
   const getStoryImage = (story: Story) => {
-    console.log('story is: ', story)
     const firstImageBlock = story.sections.find(
       (section) => section.__typename === 'ImageBlock'
     )
-
-    console.log('first image block is: ', firstImageBlock)
-
-    return firstImageBlock ? firstImageBlock.image.url : ''
+    return firstImageBlock ? firstImageBlock?.image?.url : ''
   }
 
   return (
     <PageWrapper>
       <ContentContainer>
-        <Heading size="5xl" textAlign="center">
+        <Heading
+          size={{ base: '2xl', md: '4xl', lg: '5xl' }}
+          textAlign="center"
+        >
           {pageData.soul.name}
         </Heading>
+        <Stack my="8" maxW="800px" mx="auto">
+          {pageData.soul?.blurb && <Text>{pageData.soul.blurb}</Text>}
+        </Stack>
         <Center mt="6" mb="10">
           <Link href={routeMap.shareTheStoke(soulSlug)}>
-            <Button>Share the Stoke</Button>
+            <Button>Share your story</Button>
           </Link>
         </Center>
 
@@ -64,9 +65,9 @@ export default function SoulLandingPage({
             const bgStyles = storyImage
               ? { bg: 'grey.1000' }
               : {
-                  bg: 'linear-gradient(270deg, #ff7e5f, #feb47b, #86a8e7, #91eae4)',
-                  bgSize: '800% 800%',
-                  animation: 'gradientAnimation 15s ease infinite',
+                  bg: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
+                  bgSize: '400% 400%',
+                  animation: 'gradientAnimation 7s ease infinite',
                   animationDelay: 'calc(var(--animation-order) * 0.5s)',
                 }
 

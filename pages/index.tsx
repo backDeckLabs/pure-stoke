@@ -2,7 +2,7 @@ import { ContentContainer } from '@/components/layout/ContentContainer'
 import PageWrapper from '@/components/layout/PageWrapper'
 import { Button } from '@/components/ui/button'
 import { routeMap } from '@/lib/route-map'
-import { Box, Heading } from '@chakra-ui/react'
+import { Box, Heading, Text } from '@chakra-ui/react'
 import Link from 'next/link'
 
 export default function Home() {
@@ -24,6 +24,8 @@ export default function Home() {
             PURE
           </Heading>
         </Box>
+
+        <Text my="10">Some words here about the gist of PureStoke</Text>
 
         <Link href={routeMap.soul('daveydawg')}>
           <Button mt="20">Davey Dawg</Button>

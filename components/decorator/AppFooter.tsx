@@ -7,7 +7,11 @@ const AppFooter: FC = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <Box as="footer" borderTop="1px solid" borderColor="gray.300">
+    <Box
+      as="footer"
+      borderTop="1px solid"
+      borderColor={{ base: 'gray.200', _dark: 'gray.700' }}
+    >
       <ContentContainer>
         <Flex
           position="relative"

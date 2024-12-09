@@ -21,7 +21,10 @@ export default function StoryPage({
           label={pageData.story.soul.name}
         />
         <Center gap="4" flexDir="column">
-          <Heading size="5xl" textAlign="center">
+          <Heading
+            size={{ base: '2xl', md: '4xl', lg: '5xl' }}
+            textAlign="center"
+          >
             {pageData.story.title}
           </Heading>
           <Text>By {pageData.story.authorName}</Text>
@@ -29,7 +32,7 @@ export default function StoryPage({
       </ContentContainer>
 
       <ContentContainer text mt="10">
-        <Stack gap="8">
+        <Stack gap={{ base: 8, md: 12 }}>
           {pageData.story.sections.map((section, index) => {
             if (section.__typename === 'TextBlock') {
               return <Text key={index}>{section.text}</Text>
@@ -37,7 +40,7 @@ export default function StoryPage({
               return (
                 <Image
                   key={index}
-                  src={section.image.url}
+                  src={section?.image?.url}
                   alt="A cool image"
                   className="mx-auto"
                   width={1200}
