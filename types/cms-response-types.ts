@@ -26,6 +26,7 @@ export type StoryQueryResponse = { story: Story }
 export type Soul = {
   name: string
   slug: string
+  blurb?: string
   story: Story[]
 }
 

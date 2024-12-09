@@ -9,7 +9,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Field } from '@/components/ui/field'
 import SectionTextBlock from './SectionTextBlock'
 import SectionImageBlock from './SectionImageBlock'
@@ -19,6 +19,19 @@ import { emailValidationPattern, stringToSlug } from '@/lib/form-utils'
 import { cmsRequest } from '@/lib/hygraph'
 import { uploadImage } from '@/lib/image-upload'
 import { LuImage, LuText } from 'react-icons/lu'
+import {
+  DialogActionTrigger,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+} from '../ui/dialog'
+import Link from 'next/link'
+import { routeMap } from '@/lib/route-map'
+import { Alert } from '../ui/alert'
 
 const CREATE_STORY_MUTATION = `
   mutation CreateStory($title: String!, $slug: String!, $soulSlug: String!, $authorName: String!, $authorEmail: String!, $sections: StorysectionsUnionCreateManyInlineInput) {
@@ -56,11 +69,21 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm()
 
   const [storySections, setStorySections] = useState<StorySection[]>([])
+  const [showStorySectionsError, setShowStorySectionsError] = useState(false)
   const [submissionLoading, setSubmissionLoading] = useState(false)
+  const [showSubmitSuccess, setShowSubmitSuccess] = useState(false)
+  const [errorDuringSubmit, setErrorDuringSubmit] = useState(false)
+
+  useEffect(() => {
+    if (storySections.length > 0) {
+      setShowStorySectionsError(false)
+    }
+  }, [storySections])
 
   const handleAddSection = (type: StorySectionType) => {
     setStorySections((prev) => [
@@ -79,13 +102,18 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
     setStorySections(updatedSections)
   }
 
+  const resetStoryForm = () => {
+    setStorySections([])
+    reset()
+  }
+
   const handleStorySubmit = handleSubmit(async (data) => {
     setSubmissionLoading(true)
 
     const filteredSections = storySections.filter((section) => !!section.value)
     if (filteredSections.length === 0) {
-      console.log('No sections added')
-      // TODO: handle error here
+      setShowStorySectionsError(true)
+      setSubmissionLoading(false)
       return
     }
 
@@ -121,7 +149,7 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
 
     try {
       console.log('creating story...')
-      const storyResponse = await cmsRequest({
+      await cmsRequest({
         query: CREATE_STORY_MUTATION,
         variables: {
           title: data.storyTitle,
@@ -134,18 +162,23 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
           },
         },
       })
-      console.log('story response: ', storyResponse)
+      resetStoryForm()
     } catch (error) {
       console.log('error creating story: ', error)
+      setErrorDuringSubmit(true)
     } finally {
       setSubmissionLoading(false)
+      setShowSubmitSuccess(true)
     }
   })
 
   return (
     <Box>
       <Stack gap="4">
-        <Heading size="5xl" textAlign="center">
+        <Heading
+          size={{ base: '2xl', md: '4xl', lg: '5xl' }}
+          textAlign="center"
+        >
           Share The Stoke
         </Heading>
         <Box maxW="600px" mx="auto" my="4">
@@ -265,6 +298,14 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
           ))}
         </Box>
 
+        {showStorySectionsError && (
+          <Alert
+            status="error"
+            title="Please add at least one section to your story"
+            mt="4"
+          />
+        )}
+
         <Flex mt="10" gap="2">
           <Button
             type="button"
@@ -294,6 +335,51 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
           </Button>
         </Center>
       </Box>
+      <DialogRoot
+        lazyMount
+        open={showSubmitSuccess}
+        onOpenChange={(e) => setShowSubmitSuccess(e.open)}
+        size="md"
+        placement="center"
+        motionPreset="slide-in-bottom"
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Story Submitted!</DialogTitle>
+          </DialogHeader>
+          <DialogBody>
+            {errorDuringSubmit ? (
+              <Text>
+                Unfortunately an error occurred while submitting your story.
+                Please try again later and contact Colin Baxter if you need help
+                - cbaxter713@gmail.com
+              </Text>
+            ) : (
+              <Stack>
+                <Text>
+                  Thanks for taking the time to share one of your cherised
+                  memories with Dave!
+                </Text>
+                <Text>
+                  Your story has been submitted. The Baxter family will reach to
+                  you soon via the email address you provided, and will let you
+                  know when the story is being published on the site.
+                </Text>
+                <Text mt="4">Cheers!</Text>
+              </Stack>
+            )}
+          </DialogBody>
+          <DialogFooter>
+            <DialogActionTrigger asChild>
+              <Button variant="outline">Share another story</Button>
+            </DialogActionTrigger>
+            <Link href={routeMap.soul(soul)}>
+              <Button colorPalette="teal">Read more stoke</Button>
+            </Link>
+          </DialogFooter>
+          <DialogCloseTrigger />
+        </DialogContent>
+      </DialogRoot>
     </Box>
   )
 }

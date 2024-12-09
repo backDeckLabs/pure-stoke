@@ -14,7 +14,7 @@ const AppHeader: FC = () => {
       position="relative"
       as="header"
       borderBottom="1px solid"
-      borderColor="gray.300"
+      borderColor={{ base: 'gray.200', _dark: 'gray.700' }}
       zIndex={{ base: '1302', md: '1302' }}
     >
       <ContentContainer h="full">
