@@ -6,6 +6,9 @@ export const SOUL_PAGE_QUERY = `
       name
       slug
       blurb
+      image {
+        url(transformation: {image: {resize: {width: 800}}})
+      }
       story(first: 1000) {
         title
         slug
@@ -15,7 +18,7 @@ export const SOUL_PAGE_QUERY = `
             __typename
             id
             image {
-              url(transformation: {image: {resize: {width: 300}}})
+              url(transformation: {image: {resize: {width: 800}}})
             }
           }
         }

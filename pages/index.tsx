@@ -1,31 +1,29 @@
 import { ContentContainer } from '@/components/layout/ContentContainer'
 import PageWrapper from '@/components/layout/PageWrapper'
+import Logo from '@/components/patterns/Logo'
 import { Button } from '@/components/ui/button'
 import { routeMap } from '@/lib/route-map'
-import { Box, Heading, Text } from '@chakra-ui/react'
+import { Stack, Text } from '@chakra-ui/react'
 import Link from 'next/link'
 
 export default function Home() {
   return (
     <PageWrapper>
       <ContentContainer textAlign="center">
-        <Box position="relative">
-          <Heading size="7xl" fontSize="100px" letterSpacing="50px">
-            STOKE
-          </Heading>
-          <Heading
-            position="absolute"
-            top="50%"
-            left="51%"
-            transform="translate(-50%, -50%)"
-            size="2xl"
-            letterSpacing="90px"
-          >
-            PURE
-          </Heading>
-        </Box>
+        <Logo />
 
-        <Text my="10">Some words here about the gist of PureStoke</Text>
+        <Stack my="10" maxW="600px" mx="auto" textAlign="left" gap="6">
+          <Text>
+            Pure Stoke is the vision of the late, great, Dave Baxter. He
+            didn&apos;t exactly know what &quot;it&quot; was, but he knew what
+            it stood for - a lifestyle of joy, gratitude, and always finding the
+            best in everything.
+          </Text>
+          <Text>
+            This site is a tribute to Dave, and a place for all of us to share
+            the stoke.
+          </Text>
+        </Stack>
 
         <Link href={routeMap.soul('daveydawg')}>
           <Button mt="20">Davey Dawg</Button>

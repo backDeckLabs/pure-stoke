@@ -28,6 +28,8 @@ export default function SoulLandingPage({
   pageData,
   soulSlug,
 }: SoulLandingPageProps) {
+  const soulImage = pageData.soul.image?.url
+
   const getStoryImage = (story: Story) => {
     const firstImageBlock = story.sections.find(
       (section) => section.__typename === 'ImageBlock'
@@ -38,22 +40,47 @@ export default function SoulLandingPage({
   return (
     <PageWrapper>
       <ContentContainer>
-        <Heading
-          size={{ base: '2xl', md: '4xl', lg: '5xl' }}
-          textAlign="center"
+        <Flex
+          flexDirection={{ base: 'column', sm: 'row' }}
+          gap={{ base: '4', sm: '6', md: '10' }}
+          maxW="1000px"
+          mx="auto"
+          mb="20"
         >
-          {pageData.soul.name}
-        </Heading>
-        <Stack my="8" maxW="800px" mx="auto">
-          {pageData.soul?.blurb && <Text>{pageData.soul.blurb}</Text>}
-        </Stack>
-        <Center mt="6" mb="10">
-          <Link href={routeMap.shareTheStoke(soulSlug)}>
-            <Button>Share your story</Button>
-          </Link>
-        </Center>
+          {soulImage ? (
+            <Box
+              position="relative"
+              w="100%"
+              maxW="400px"
+              borderRadius="12px"
+              overflow="hidden"
+              pointerEvents="none"
+            >
+              <img
+                src={soulImage}
+                alt={`Picture of ${pageData.soul.name}`}
+                style={{ width: '100%' }}
+              />
+            </Box>
+          ) : null}
 
-        <Heading size="3xl">Stories</Heading>
+          <Box textAlign="left">
+            <Heading size={{ base: '4xl', md: '5xl', lg: '6xl' }}>
+              {pageData.soul.name}
+            </Heading>
+            <Stack mt="6" maxW="800px" mx="auto">
+              {pageData.soul?.blurb && (
+                <Text whiteSpace="pre-line">{pageData.soul.blurb}</Text>
+              )}
+              <Center mt="10">
+                <Link href={routeMap.shareTheStoke(soulSlug)}>
+                  <Button>Share your story</Button>
+                </Link>
+              </Center>
+            </Stack>
+          </Box>
+        </Flex>
+
         <Grid
           gridTemplateColumns="repeat(auto-fill, minmax(350px, 1fr))"
           gap="4"
@@ -63,7 +90,7 @@ export default function SoulLandingPage({
             const storyImage = getStoryImage(story)
 
             const bgStyles = storyImage
-              ? { bg: 'grey.1000' }
+              ? { bg: 'gray.950' }
               : {
                   bg: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
                   bgSize: '400% 400%',

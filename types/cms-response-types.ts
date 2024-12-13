@@ -27,6 +27,7 @@ export type Soul = {
   name: string
   slug: string
   blurb?: string
+  image?: { url: string }
   story: Story[]
 }
 
