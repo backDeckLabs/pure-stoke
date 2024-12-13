@@ -16,11 +16,11 @@ export function cmsRequest<T>({
   variables?: Record<string, any>
   includeDrafts?: boolean
 }): Promise<T> {
-  const headers: { authorization: string; 'X-GraphQL-Preview'?: string } = {
+  const headers: { authorization: string; 'gcms-stage'?: string } = {
     authorization: `Bearer ${process.env.NEXT_PUBLIC_HYGRAPH_API_TOKEN}`,
   }
   if (includeDrafts) {
-    headers['X-GraphQL-Preview'] = 'true'
+    headers['gcms-stage'] = 'DRAFT'
   }
 
   const hygraphClient = new GraphQLClient(CMS_API_URL, {
