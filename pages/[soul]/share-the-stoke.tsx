@@ -31,7 +31,10 @@ export default function ShareTheStoke({ pageData }: SoulLandingPageProps) {
   )
 }
 
-export async function getStaticProps({ params }: GetStaticPropsContext) {
+export async function getStaticProps({
+  params,
+  preview,
+}: GetStaticPropsContext) {
   const slug = params?.soul
 
   if (!params || !slug) {
@@ -42,7 +45,8 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
 
   const pageData = await throttledCmsRequest<SoulQueryResponse>(
     SOUL_PAGE_QUERY,
-    { slug }
+    { slug },
+    preview
   )
 
   if (!pageData.soul) {

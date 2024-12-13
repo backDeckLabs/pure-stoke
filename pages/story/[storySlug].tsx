@@ -81,7 +81,10 @@ const STORY_QUERY = `
   }
 `
 
-export async function getStaticProps({ params }: GetStaticPropsContext) {
+export async function getStaticProps({
+  params,
+  preview,
+}: GetStaticPropsContext) {
   const slug = params?.storySlug
 
   if (!params || !slug) {
@@ -90,9 +93,13 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     }
   }
 
-  const pageData = await throttledCmsRequest<StoryQueryResponse>(STORY_QUERY, {
-    slug,
-  })
+  const pageData = await throttledCmsRequest<StoryQueryResponse>(
+    STORY_QUERY,
+    {
+      slug,
+    },
+    preview
+  )
 
   if (!pageData.story) {
     return {

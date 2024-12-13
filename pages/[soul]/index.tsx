@@ -74,7 +74,7 @@ export default function SoulLandingPage({
             return (
               <Link
                 key={index}
-                href={`/${soulSlug}/${story.slug}`}
+                href={routeMap.story(story.slug)}
                 className="text-xl underline"
               >
                 <Box w="full">
@@ -136,7 +136,10 @@ export default function SoulLandingPage({
   )
 }
 
-export async function getStaticProps({ params }: GetStaticPropsContext) {
+export async function getStaticProps({
+  params,
+  preview,
+}: GetStaticPropsContext) {
   const slug = params?.soul
 
   if (!params || !slug) {
@@ -147,7 +150,8 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
 
   const pageData = await throttledCmsRequest<SoulQueryResponse>(
     SOUL_PAGE_QUERY,
-    { slug }
+    { slug },
+    preview
   )
 
   if (!pageData.soul) {
