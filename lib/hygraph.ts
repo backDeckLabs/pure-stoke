@@ -4,22 +4,29 @@ import pThrottle from 'p-throttle'
 
 const CMS_API_URL = process.env.NEXT_PUBLIC_HYGRAPH_API_URL as string
 
-const hygraphClient = new GraphQLClient(CMS_API_URL, {
-  headers: {
-    Authorization: `Bearer ${process.env.NEXT_PUBLIC_HYGRAPH_API_TOKEN}`,
-  },
-})
-
 /**
  * Function for performing a Graph QL query to the CMS
  */
 export function cmsRequest<T>({
   query,
   variables = {},
+  includeDrafts = false,
 }: {
   query: string
   variables?: Record<string, any>
+  includeDrafts?: boolean
 }): Promise<T> {
+  const headers: { authorization: string; 'X-GraphQL-Preview'?: string } = {
+    authorization: `Bearer ${process.env.NEXT_PUBLIC_HYGRAPH_API_TOKEN}`,
+  }
+  if (includeDrafts) {
+    headers['X-GraphQL-Preview'] = 'true'
+  }
+
+  const hygraphClient = new GraphQLClient(CMS_API_URL, {
+    headers,
+  })
+
   return hygraphClient.request(query, variables)
 }
 
@@ -29,10 +36,11 @@ export function cmsRequest<T>({
  */
 export const throttledCmsRequest = <T>(
   query: string,
-  variables: Record<string, any>
+  variables: Record<string, any>,
+  includeDrafts = false
 ): Promise<T> =>
   throttle(async () => {
-    const data = await cmsRequest<T>({ query, variables })
+    const data = await cmsRequest<T>({ query, variables, includeDrafts })
     return data
   })()
 
