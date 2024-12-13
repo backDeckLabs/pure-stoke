@@ -1,3 +1,3 @@
 # PureStoke
 
-A NextJS App
+A NextJS App, powering the PureStoke web experience.
