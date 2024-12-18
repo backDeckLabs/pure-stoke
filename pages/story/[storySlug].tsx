@@ -41,7 +41,7 @@ export default function StoryPage({
               return (
                 <AspectRatio key={index} ratio={image?.width / image?.height}>
                   <img
-                    src={image.url}
+                    src={image?.url}
                     alt="A cool image"
                     style={{ width: '100%', height: '100%' }}
                   />
