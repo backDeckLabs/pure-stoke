@@ -12,6 +12,8 @@ const BackLink: FC<BackLinkProps> = ({ label, href }) => {
   return (
     <Link href={href}>
       <Flex
+        position="relative"
+        top="-3"
         gap="2"
         align="center"
         w="fit-content"
@@ -20,6 +22,7 @@ const BackLink: FC<BackLinkProps> = ({ label, href }) => {
         borderRadius="4px"
         p="2"
         pr="3"
+        mb={{ base: '4', md: '2' }}
       >
         <LuChevronLeft size="24px" />
         <Text fontWeight="bold">{label}</Text>

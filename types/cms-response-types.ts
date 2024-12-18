@@ -15,6 +15,8 @@ export type TextBlock = {
 export type ImageBlock = {
   __typename: 'ImageBlock'
   image: {
+    height: number
+    width: number
     url: string
   }
 }

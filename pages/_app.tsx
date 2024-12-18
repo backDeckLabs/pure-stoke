@@ -7,6 +7,7 @@ import { ReactElement, ReactNode } from 'react'
 
 // GLOBAL STYLES
 import '@/styles/global.css'
+import DefaultMetaTags from '@/components/seo/DefaultMetaTags'
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -25,6 +26,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <ChakraProvider>
       <Flex id="app-content" direction="column" flexGrow="1">
+        <DefaultMetaTags />
         {getLayout(<Component {...pageProps} />)}
       </Flex>
     </ChakraProvider>

@@ -82,7 +82,7 @@ export default function SoulLandingPage({
         </Flex>
 
         <Grid
-          gridTemplateColumns="repeat(auto-fill, minmax(350px, 1fr))"
+          gridTemplateColumns="repeat(auto-fill, minmax(325px, 1fr))"
           gap="4"
           mt="6"
         >
@@ -104,7 +104,7 @@ export default function SoulLandingPage({
                 href={routeMap.story(story.slug)}
                 className="text-xl underline"
               >
-                <Box w="full">
+                <Box w="full" borderRadius="4px" overflow="hidden">
                   <AspectRatio ratio={16 / 9}>
                     <Flex
                       w="full"

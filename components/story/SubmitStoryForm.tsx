@@ -32,6 +32,7 @@ import {
 import Link from 'next/link'
 import { routeMap } from '@/lib/route-map'
 import { Alert } from '../ui/alert'
+import { createBrevoContact } from '@/lib/email-api'
 
 const CREATE_STORY_MUTATION = `
   mutation CreateStory($title: String!, $slug: String!, $soulSlug: String!, $authorName: String!, $authorEmail: String!, $sections: StorysectionsUnionCreateManyInlineInput) {
@@ -162,6 +163,23 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
           },
         },
       })
+
+      const emailResponse = await createBrevoContact(
+        data.authorEmail,
+        data.authorName,
+        [2]
+      )
+
+      const responseError = emailResponse?.error
+
+      if (responseError) {
+        console.log('error signing up for email list: ', responseError)
+
+        if (responseError?.body?.code === 'duplicate_parameter') {
+          console.log('email already exists')
+        }
+      }
+
       resetStoryForm()
     } catch (error) {
       console.log('error creating story: ', error)
@@ -215,7 +233,14 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
         </Box>
       </Stack>
 
-      <Box as="form" w="600px" mx="auto" mt="10" onSubmit={handleStorySubmit}>
+      <Box
+        as="form"
+        w="full"
+        maxW="600px"
+        mx="auto"
+        mt="10"
+        onSubmit={handleStorySubmit}
+      >
         <Stack gap={4}>
           <Flex gap="2">
             <Field
@@ -311,7 +336,7 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
             type="button"
             colorPalette="cyan"
             variant="ghost"
-            size="sm"
+            size={{ base: 'xs', md: 'sm' }}
             flexGrow={1}
             onClick={() => handleAddSection('TextBlock')}
           >
@@ -321,7 +346,7 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
             type="button"
             colorPalette="purple"
             variant="ghost"
-            size="sm"
+            size={{ base: 'xs', md: 'sm' }}
             flexGrow={1}
             onClick={() => handleAddSection('ImageBlock')}
           >

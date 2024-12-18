@@ -1,12 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
 import { ContentContainer } from '@/components/layout/ContentContainer'
 import PageWrapper from '@/components/layout/PageWrapper'
 import BackLink from '@/components/ui/BackLink'
 import { cmsRequest, throttledCmsRequest } from '@/lib/hygraph'
 import { routeMap } from '@/lib/route-map'
 import { StoryQueryResponse } from '@/types/cms-response-types'
-import { Center, Heading, Stack, Text } from '@chakra-ui/react'
+import { AspectRatio, Center, Heading, Stack, Text } from '@chakra-ui/react'
 import { GetStaticPropsContext } from 'next'
-import Image from 'next/image'
 
 export default function StoryPage({
   pageData,
@@ -37,15 +37,15 @@ export default function StoryPage({
             if (section.__typename === 'TextBlock') {
               return <Text key={index}>{section.text}</Text>
             } else if (section.__typename === 'ImageBlock') {
+              const image = section.image
               return (
-                <Image
-                  key={index}
-                  src={section?.image?.url}
-                  alt="A cool image"
-                  className="mx-auto"
-                  width={1200}
-                  height={800}
-                />
+                <AspectRatio key={index} ratio={image?.width / image?.height}>
+                  <img
+                    src={image.url}
+                    alt="A cool image"
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </AspectRatio>
               )
             }
           })}
@@ -73,7 +73,9 @@ const STORY_QUERY = `
         ... on ImageBlock {
           __typename
           image {
-            url
+            height
+            width
+            url(transformation: {image: {resize: {width: 2400}}})
           }
         }
       }
