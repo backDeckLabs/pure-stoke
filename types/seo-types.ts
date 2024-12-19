@@ -1,0 +1,15 @@
+export enum PsSeoKeys {
+  Title = 'title',
+  OgTitle = 'meta-og:title',
+  Description = 'meta-description',
+  OgDescription = 'meta-og:description',
+  OgImage = 'meta-og:image',
+  OgImageWidth = 'meta-og:image:width',
+  OgImageHeight = 'meta-og:image:height',
+  OgUrl = 'meta-og:url',
+  TwitterCard = 'meta-twitter:card',
+  Label1 = 'meta-twitter:label1',
+  Data1 = 'meta-twitter:data1',
+  Label2 = 'meta-twitter:label2',
+  Data2 = 'meta-twitte:data2',
+}

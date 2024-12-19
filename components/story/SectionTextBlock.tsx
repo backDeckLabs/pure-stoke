@@ -40,13 +40,14 @@ const SectionTextBlock: FC<SectionTextBlockProps> = ({
         overflow="hidden"
         lineHeight="inherit"
         css={styles}
+        pr="7"
       />
       <CloseButton
         position="absolute"
         top="1"
         right="1"
         size="xs"
-        variant="subtle"
+        variant="ghost"
         colorPalette="gray"
         onClick={onRemove}
       />

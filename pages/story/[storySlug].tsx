@@ -1,24 +1,46 @@
+/* eslint-disable @next/next/no-img-element */
 import { ContentContainer } from '@/components/layout/ContentContainer'
 import PageWrapper from '@/components/layout/PageWrapper'
+import SeoTags from '@/components/seo/SeoTags'
 import BackLink from '@/components/ui/BackLink'
 import { cmsRequest, throttledCmsRequest } from '@/lib/hygraph'
+import { truncateString } from '@/lib/js-utils'
 import { routeMap } from '@/lib/route-map'
+import {
+  getAuthorFullname,
+  getSoulFullName,
+  getStoryImage,
+} from '@/lib/soul-page-utils'
 import { StoryQueryResponse } from '@/types/cms-response-types'
-import { Center, Heading, Stack, Text } from '@chakra-ui/react'
+import { AspectRatio, Center, Heading, Stack, Text } from '@chakra-ui/react'
 import { GetStaticPropsContext } from 'next'
-import Image from 'next/image'
 
 export default function StoryPage({
   pageData,
 }: {
   pageData: StoryQueryResponse
 }) {
+  const textBlocks = pageData.story.sections.filter(
+    (section) => section.__typename === 'TextBlock'
+  )
+  const storyText = textBlocks.map((block) => block.text).join(' ')
+  const seoDescription = truncateString(storyText, 160)
+
   return (
     <PageWrapper>
+      <SeoTags
+        title={pageData.story.title}
+        description={seoDescription}
+        image={getStoryImage(pageData.story)}
+        label1="Written by"
+        data1={getAuthorFullname(pageData.story)}
+        label2="Written about"
+        data2={getSoulFullName(pageData.story.soul)}
+      />
       <ContentContainer>
         <BackLink
           href={routeMap.soul(pageData.story.soul.slug)}
-          label={pageData.story.soul.name}
+          label={getSoulFullName(pageData.story.soul)}
         />
         <Center gap="4" flexDir="column">
           <Heading
@@ -27,7 +49,7 @@ export default function StoryPage({
           >
             {pageData.story.title}
           </Heading>
-          <Text>By {pageData.story.authorName}</Text>
+          <Text>By {getAuthorFullname(pageData.story)}</Text>
         </Center>
       </ContentContainer>
 
@@ -37,15 +59,15 @@ export default function StoryPage({
             if (section.__typename === 'TextBlock') {
               return <Text key={index}>{section.text}</Text>
             } else if (section.__typename === 'ImageBlock') {
+              const image = section.image
               return (
-                <Image
-                  key={index}
-                  src={section?.image?.url}
-                  alt="A cool image"
-                  className="mx-auto"
-                  width={1200}
-                  height={800}
-                />
+                <AspectRatio key={index} ratio={image?.width / image?.height}>
+                  <img
+                    src={image?.url}
+                    alt="A cool image"
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </AspectRatio>
               )
             }
           })}
@@ -60,20 +82,24 @@ const STORY_QUERY = `
     story(where: {slug: $slug}) {
       title
       slug
-      authorName
+      authorFirstName
+      authorLastName
       soul {
         slug
-        name
+        firstName
+        lastName
       }
       sections {
-          ... on TextBlock {
+        ... on TextBlock {
           __typename
           text
         }
         ... on ImageBlock {
           __typename
           image {
-            url
+            height
+            width
+            url(transformation: {image: {resize: {width: 2400}}})
           }
         }
       }

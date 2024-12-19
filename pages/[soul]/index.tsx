@@ -1,11 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import { cmsRequest, throttledCmsRequest } from '@/lib/hygraph'
-import { SoulQueryResponse, Story } from '@/types/cms-response-types'
+import { SoulQueryResponse } from '@/types/cms-response-types'
 import Link from 'next/link'
 import { GetStaticPropsContext } from 'next'
 import {
   ALL_SOULS_QUERY,
   AllSoulPages,
+  getAuthorFullname,
+  getSoulFullName,
+  getStoryImage,
   SOUL_PAGE_QUERY,
   SoulLandingPageProps,
 } from '@/lib/soul-page-utils'
@@ -23,6 +26,7 @@ import {
 } from '@chakra-ui/react'
 import { routeMap } from '@/lib/route-map'
 import { Button } from '@/components/ui/button'
+import SeoTags from '@/components/seo/SeoTags'
 
 export default function SoulLandingPage({
   pageData,
@@ -30,15 +34,15 @@ export default function SoulLandingPage({
 }: SoulLandingPageProps) {
   const soulImage = pageData.soul.image?.url
 
-  const getStoryImage = (story: Story) => {
-    const firstImageBlock = story.sections.find(
-      (section) => section.__typename === 'ImageBlock'
-    )
-    return firstImageBlock ? firstImageBlock?.image?.url : ''
-  }
+  const fullName = getSoulFullName(pageData.soul)
 
   return (
     <PageWrapper>
+      <SeoTags
+        title={fullName}
+        image={pageData.soul.image?.url}
+        description={pageData.soul.blurb}
+      />
       <ContentContainer>
         <Flex
           flexDirection={{ base: 'column', sm: 'row' }}
@@ -58,7 +62,7 @@ export default function SoulLandingPage({
             >
               <img
                 src={soulImage}
-                alt={`Picture of ${pageData.soul.name}`}
+                alt={`Picture of ${fullName}`}
                 style={{ width: '100%' }}
               />
             </Box>
@@ -66,7 +70,7 @@ export default function SoulLandingPage({
 
           <Box textAlign="left">
             <Heading size={{ base: '4xl', md: '5xl', lg: '6xl' }}>
-              {pageData.soul.name}
+              {fullName}
             </Heading>
             <Stack mt="6" maxW="800px" mx="auto">
               {pageData.soul?.blurb && (
@@ -82,7 +86,10 @@ export default function SoulLandingPage({
         </Flex>
 
         <Grid
-          gridTemplateColumns="repeat(auto-fill, minmax(350px, 1fr))"
+          gridTemplateColumns={{
+            base: 'repeat(auto-fill, minmax(325px, 1fr))',
+            xl: 'repeat(3, 1fr)',
+          }}
           gap="4"
           mt="6"
         >
@@ -104,7 +111,7 @@ export default function SoulLandingPage({
                 href={routeMap.story(story.slug)}
                 className="text-xl underline"
               >
-                <Box w="full">
+                <Box w="full" borderRadius="4px" overflow="hidden">
                   <AspectRatio ratio={16 / 9}>
                     <Flex
                       w="full"
@@ -148,7 +155,7 @@ export default function SoulLandingPage({
                           <Text fontSize="2xl" fontWeight="bold">
                             {story.title}
                           </Text>
-                          <Text>By {story.authorName}</Text>
+                          <Text>By {getAuthorFullname(story)}</Text>
                         </Box>
                       </Flex>
                     </Flex>
