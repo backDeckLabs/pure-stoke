@@ -8,7 +8,7 @@ const DefaultMetaTags: FC = () => {
   const defaultSeo = {
     title: 'Pure Stoke',
     description: 'Gratitude, every moment possible.',
-    image: '/images/default-meta-image.jpg',
+    image: '/assets/logos/Logo_dark.jpg',
     siteName: 'Pure Stoke',
   }
 
@@ -16,8 +16,8 @@ const DefaultMetaTags: FC = () => {
     <Head>
       <meta content="width=device-width, initial-scale=1" name="viewport" />
       {/* <meta name="google-site-verification" content="google972c07996b23ef3d" /> */}
-      {/* <link rel="preconnect" href="lh3.googleusercontent.com" />
-      <link rel="preconnect" href="www.datocms-assets.com" /> */}
+      <link rel="preconnect" href="us-west-2.graphassets.com" />
+      <link rel="preconnect" href="graphassets.com" />
       {/* <link rel="icon" href="/favicon.ico" sizes="any" />
       <link rel="icon" href="/favicon.svg" type="image/svg+xml" /> */}
       <title key={PsSeoKeys.Title}>{defaultSeo.title}</title>
