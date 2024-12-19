@@ -1,16 +1,18 @@
 import { ContentContainer } from '@/components/layout/ContentContainer'
 import PageWrapper from '@/components/layout/PageWrapper'
-import Logo from '@/components/patterns/Logo'
+import LogoMask from '@/components/patterns/LogoMask'
 import { Button } from '@/components/ui/button'
 import { routeMap } from '@/lib/route-map'
-import { Heading, Stack, Text } from '@chakra-ui/react'
+import { Center, Heading, Stack, Text } from '@chakra-ui/react'
 import Link from 'next/link'
 
 export default function Home() {
   return (
     <PageWrapper>
       <ContentContainer textAlign="center">
-        <Logo />
+        <Center>
+          <LogoMask width="1000px" />
+        </Center>
 
         <Heading size="2xl" mt="20" mb="15" fontStyle="italic">
           A community driven storytelling space
@@ -30,7 +32,7 @@ export default function Home() {
         </Stack>
 
         <Link href={routeMap.soul('daveydawg')}>
-          <Button mt="20">Davey Dawg</Button>
+          <Button mt="10">Davey Dawg</Button>
         </Link>
       </ContentContainer>
     </PageWrapper>
