@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { cmsRequest, throttledCmsRequest } from '@/lib/hygraph'
-import { SoulQueryResponse, Story } from '@/types/cms-response-types'
+import { SoulQueryResponse } from '@/types/cms-response-types'
 import Link from 'next/link'
 import { GetStaticPropsContext } from 'next'
 import {

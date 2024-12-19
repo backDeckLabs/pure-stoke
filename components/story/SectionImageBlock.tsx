@@ -3,11 +3,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { CloseButton } from '../ui/close-button'
-import {
-  FileUploadList,
-  FileUploadRoot,
-  FileUploadTrigger,
-} from '../ui/file-upload'
+import { FileUploadRoot, FileUploadTrigger } from '../ui/file-upload'
 import { Button } from '../ui/button'
 import { LuUpload } from 'react-icons/lu'
 
@@ -65,10 +61,9 @@ const SectionImageBlock: FC<SectionImageBlockProps> = ({
         <Flex gap="2">
           <FileUploadTrigger>
             <Button variant="surface" colorPalette="gray">
-              <LuUpload /> Upload photo
+              <LuUpload /> {previewUrl ? 'Change photo' : 'Upload photo'}
             </Button>
           </FileUploadTrigger>
-          <FileUploadList showSize borderColor="transparent" w="full" />
         </Flex>
       </FileUploadRoot>
       <Text fontSize="xs" mt="2">

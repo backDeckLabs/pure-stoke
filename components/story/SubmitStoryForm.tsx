@@ -263,7 +263,7 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
         onSubmit={handleStorySubmit}
       >
         <Stack gap={4}>
-          <Flex gap="6">
+          <Flex direction={{ base: 'column', sm: 'row' }} gap="6">
             <Field
               label="First Name"
               invalid={!!errors['authorFirstName']}
@@ -304,7 +304,11 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
             </Field>
           </Flex>
 
-          <Flex gap="6" align="flex-end">
+          <Flex
+            gap="6"
+            direction={{ base: 'column', sm: 'row' }}
+            align="flex-end"
+          >
             <Field
               label="Email Address"
               invalid={!!errors['authorEmail']}
@@ -445,13 +449,13 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
             ) : (
               <Stack>
                 <Text>
-                  {`Thanks for taking the time to share one of your cherised
-                  memories with ${soul.firstName}!`}
+                  {`Thanks for taking the time to share one of your cherished
+                  memories with ${soul.firstName}.`}
                 </Text>
                 <Text>
-                  Your story has been submitted. The Baxter family will reach
-                  out to you soon via the email address you provided, and will
-                  let you know when the story is being published on the site.
+                  The Baxter family will reach out to you soon via the email
+                  address you provided, and will let you know when your story is
+                  being published on the site.
                 </Text>
                 <Text mt="4">Cheers!</Text>
               </Stack>
