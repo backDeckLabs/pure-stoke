@@ -20,12 +20,14 @@ const handleRequestError = (error: unknown) => {
  */
 export const createBrevoContact = async (
   email: string,
-  name: string,
+  firstName: string,
+  lastName: string,
   listIds?: number[]
 ) => {
   const request = {
     email,
-    name,
+    firstName,
+    lastName,
     listIds: listIds ?? [brevoListIds.testStokeList],
   }
 

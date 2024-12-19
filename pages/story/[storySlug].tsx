@@ -1,9 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import { ContentContainer } from '@/components/layout/ContentContainer'
 import PageWrapper from '@/components/layout/PageWrapper'
+import SeoTags from '@/components/seo/SeoTags'
 import BackLink from '@/components/ui/BackLink'
 import { cmsRequest, throttledCmsRequest } from '@/lib/hygraph'
+import { truncateString } from '@/lib/js-utils'
 import { routeMap } from '@/lib/route-map'
+import {
+  getAuthorFullname,
+  getSoulFullName,
+  getStoryImage,
+} from '@/lib/soul-page-utils'
 import { StoryQueryResponse } from '@/types/cms-response-types'
 import { AspectRatio, Center, Heading, Stack, Text } from '@chakra-ui/react'
 import { GetStaticPropsContext } from 'next'
@@ -13,12 +20,27 @@ export default function StoryPage({
 }: {
   pageData: StoryQueryResponse
 }) {
+  const textBlocks = pageData.story.sections.filter(
+    (section) => section.__typename === 'TextBlock'
+  )
+  const storyText = textBlocks.map((block) => block.text).join(' ')
+  const seoDescription = truncateString(storyText, 160)
+
   return (
     <PageWrapper>
+      <SeoTags
+        title={pageData.story.title}
+        description={seoDescription}
+        image={getStoryImage(pageData.story)}
+        label1="Written by"
+        data1={getAuthorFullname(pageData.story)}
+        label2="Written about"
+        data2={getSoulFullName(pageData.story.soul)}
+      />
       <ContentContainer>
         <BackLink
           href={routeMap.soul(pageData.story.soul.slug)}
-          label={pageData.story.soul.name}
+          label={getSoulFullName(pageData.story.soul)}
         />
         <Center gap="4" flexDir="column">
           <Heading
@@ -27,7 +49,7 @@ export default function StoryPage({
           >
             {pageData.story.title}
           </Heading>
-          <Text>By {pageData.story.authorName}</Text>
+          <Text>By {getAuthorFullname(pageData.story)}</Text>
         </Center>
       </ContentContainer>
 
@@ -60,13 +82,15 @@ const STORY_QUERY = `
     story(where: {slug: $slug}) {
       title
       slug
-      authorName
+      authorFirstName
+      authorLastName
       soul {
         slug
-        name
+        firstName
+        lastName
       }
       sections {
-          ... on TextBlock {
+        ... on TextBlock {
           __typename
           text
         }

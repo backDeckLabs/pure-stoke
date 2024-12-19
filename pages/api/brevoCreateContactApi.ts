@@ -17,7 +17,7 @@ const brevoCreateContactApi = async (
   }
 
   // Extract required data from the request body
-  const { email, listIds, name } = req.body
+  const { email, listIds, firstName, lastName } = req.body
 
   if (!email) {
     return res.status(400).json({ message: 'Missing required fields: email' })
@@ -26,7 +26,10 @@ const brevoCreateContactApi = async (
   const newContact = new CreateContact()
   newContact.email = email
   newContact.listIds = listIds || []
-  newContact.attributes = { FIRSTNAME: name || 'Name unknown' }
+  newContact.attributes = {
+    FIRSTNAME: firstName || '',
+    LASTNAME: lastName || '',
+  }
 
   try {
     const response = await apiInstance.createContact(newContact)

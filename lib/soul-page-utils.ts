@@ -1,10 +1,12 @@
-import { SoulQueryResponse } from '@/types/cms-response-types'
+import { Soul, SoulQueryResponse, Story } from '@/types/cms-response-types'
 
 export const SOUL_PAGE_QUERY = `
   query GetSoul($slug: String!) {
     soul(where: {slug: $slug}) {
-      name
+      firstName
+      lastName
       slug
+      emailContactListId
       blurb
       image {
         url(transformation: {image: {resize: {width: 800}}})
@@ -12,7 +14,8 @@ export const SOUL_PAGE_QUERY = `
       story(first: 1000) {
         title
         slug
-        authorName
+        authorFirstName
+        authorLastName
         sections {
           ... on ImageBlock {
             __typename
@@ -44,4 +47,19 @@ export type AllSoulPages = {
 export type SoulLandingPageProps = {
   pageData: SoulQueryResponse
   soulSlug: string
+}
+
+export const getSoulFullName = (soul: Soul) => {
+  return `${soul.firstName} ${soul.lastName}`
+}
+
+export const getAuthorFullname = (story: Story) => {
+  return `${story.authorFirstName} ${story.authorLastName}`
+}
+
+export const getStoryImage = (story: Story) => {
+  const firstImageBlock = story.sections.find(
+    (section) => section.__typename === 'ImageBlock'
+  )
+  return firstImageBlock ? firstImageBlock?.image?.url : ''
 }

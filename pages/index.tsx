@@ -3,7 +3,7 @@ import PageWrapper from '@/components/layout/PageWrapper'
 import Logo from '@/components/patterns/Logo'
 import { Button } from '@/components/ui/button'
 import { routeMap } from '@/lib/route-map'
-import { Stack, Text } from '@chakra-ui/react'
+import { Heading, Stack, Text } from '@chakra-ui/react'
 import Link from 'next/link'
 
 export default function Home() {
@@ -11,6 +11,10 @@ export default function Home() {
     <PageWrapper>
       <ContentContainer textAlign="center">
         <Logo />
+
+        <Heading size="2xl" mt="20" mb="15" fontStyle="italic">
+          A community driven storytelling space
+        </Heading>
 
         <Stack my="10" maxW="600px" mx="auto" textAlign="left" gap="6">
           <Text>
@@ -21,7 +25,7 @@ export default function Home() {
           </Text>
           <Text>
             This site is a tribute to Dave, and a place for all of us to share
-            the stoke.
+            the Stoke.
           </Text>
         </Stack>
 

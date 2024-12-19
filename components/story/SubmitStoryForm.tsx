@@ -1,6 +1,7 @@
 import {
   Box,
   Center,
+  CheckboxCheckedChangeDetails,
   Flex,
   Heading,
   Input,
@@ -33,15 +34,23 @@ import Link from 'next/link'
 import { routeMap } from '@/lib/route-map'
 import { Alert } from '../ui/alert'
 import { createBrevoContact } from '@/lib/email-api'
+import { Checkbox } from '../ui/checkbox'
+import { Soul } from '@/types/cms-response-types'
+import { CheckedState } from '@zag-js/checkbox'
 
 const CREATE_STORY_MUTATION = `
-  mutation CreateStory($title: String!, $slug: String!, $soulSlug: String!, $authorName: String!, $authorEmail: String!, $sections: StorysectionsUnionCreateManyInlineInput) {
+  mutation CreateStory(
+    $title: String!, $slug: String!, $soulSlug: String!, 
+    $authorFirstName: String!, $authorLastName: String!, 
+    $authorEmail: String!, $sections: StorysectionsUnionCreateManyInlineInput
+  ) {
     createStory(
       data: {
         title: $title, 
         slug: $slug, 
         soul: {connect: {slug: $soulSlug}}, 
-        authorName: $authorName,
+        authorFirstName: $authorFirstName,
+        authorLastName: $authorLastName,
         authorEmail: $authorEmail,
         sections: $sections
       }
@@ -63,7 +72,7 @@ type StorySection = {
 
 export interface SubmitStoryFormProps {
   /** Soul to submit a story for */
-  soul: string
+  soul: Soul
 }
 
 const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
@@ -76,6 +85,8 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
 
   const [storySections, setStorySections] = useState<StorySection[]>([])
   const [showStorySectionsError, setShowStorySectionsError] = useState(false)
+  const [agreeToEmailSignup, setAgreeToEmailSignup] =
+    useState<CheckedState>(true)
   const [submissionLoading, setSubmissionLoading] = useState(false)
   const [showSubmitSuccess, setShowSubmitSuccess] = useState(false)
   const [errorDuringSubmit, setErrorDuringSubmit] = useState(false)
@@ -103,13 +114,19 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
     setStorySections(updatedSections)
   }
 
+  const handleEmailSignUpChange = (value: CheckboxCheckedChangeDetails) => {
+    setAgreeToEmailSignup(value.checked)
+  }
+
   const resetStoryForm = () => {
     setStorySections([])
     reset()
+    setErrorDuringSubmit(false)
   }
 
   const handleStorySubmit = handleSubmit(async (data) => {
     setSubmissionLoading(true)
+    setErrorDuringSubmit(false)
 
     const filteredSections = storySections.filter((section) => !!section.value)
     if (filteredSections.length === 0) {
@@ -155,8 +172,9 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
         variables: {
           title: data.storyTitle,
           slug: stringToSlug(data.storyTitle),
-          soulSlug: soul,
-          authorName: data.authorName,
+          soulSlug: soul.slug,
+          authorFirstName: data.authorFirstName,
+          authorLastName: data.authorLastName,
           authorEmail: data.authorEmail,
           sections: {
             create: sectionsJson,
@@ -164,19 +182,22 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
         },
       })
 
-      const emailResponse = await createBrevoContact(
-        data.authorEmail,
-        data.authorName,
-        [2]
-      )
+      if (agreeToEmailSignup && soul.emailContactListId) {
+        const emailResponse = await createBrevoContact(
+          data.authorEmail,
+          data.authorFirstName,
+          data.authorLastName,
+          [soul.emailContactListId]
+        )
 
-      const responseError = emailResponse?.error
+        const responseError = emailResponse?.error
 
-      if (responseError) {
-        console.log('error signing up for email list: ', responseError)
+        if (responseError) {
+          console.log('error signing up for email list: ', responseError)
 
-        if (responseError?.body?.code === 'duplicate_parameter') {
-          console.log('email already exists')
+          if (responseError?.body?.code === 'duplicate_parameter') {
+            console.log('email already exists')
+          }
         }
       }
 
@@ -242,27 +263,48 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
         onSubmit={handleStorySubmit}
       >
         <Stack gap={4}>
-          <Flex gap="2">
+          <Flex gap="6">
             <Field
-              label="Your Name"
-              invalid={!!errors['authorName']}
-              errorText={errors['authorName']?.message as string}
+              label="First Name"
+              invalid={!!errors['authorFirstName']}
+              errorText={errors['authorFirstName']?.message as string}
             >
               <Input
                 type="text"
-                {...register('authorName', {
+                {...register('authorFirstName', {
                   required: {
                     value: true,
-                    message: 'Name is required',
+                    message: 'First name is required',
                   },
                   maxLength: {
                     value: 128,
-                    message: 'Name must be less than 128 characters',
+                    message: 'First name must be less than 128 characters',
                   },
                 })}
               />
             </Field>
+            <Field
+              label="Last Name"
+              invalid={!!errors['authorLastName']}
+              errorText={errors['authorLastName']?.message as string}
+            >
+              <Input
+                type="text"
+                {...register('authorLastName', {
+                  required: {
+                    value: true,
+                    message: 'Last name is required',
+                  },
+                  maxLength: {
+                    value: 128,
+                    message: 'Last name must be less than 128 characters',
+                  },
+                })}
+              />
+            </Field>
+          </Flex>
 
+          <Flex gap="6" align="flex-end">
             <Field
               label="Email Address"
               invalid={!!errors['authorEmail']}
@@ -282,6 +324,22 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
                 })}
               />
             </Field>
+            <Field cursor="pointer">
+              <Checkbox
+                gap="2"
+                alignItems="flex-start"
+                colorPalette={'cyan'}
+                variant="outline"
+                checked={agreeToEmailSignup}
+                onCheckedChange={handleEmailSignUpChange}
+                cursor="pointer"
+              >
+                <Box lineHeight="1">Monthly {soul.firstName} Stoke recap</Box>
+                <Box fontWeight="normal" color="fg.muted" mt="1">
+                  Get an email update about new stories
+                </Box>
+              </Checkbox>
+            </Field>
           </Flex>
 
           <Separator my="4" size="md" variant="dashed" />
@@ -293,7 +351,10 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
           >
             <Input
               type="text"
-              size="lg"
+              size="2xl"
+              py="2"
+              px="3"
+              fontWeight="bold"
               {...register('storyTitle', {
                 required: {
                   value: true,
@@ -370,7 +431,9 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Story Submitted!</DialogTitle>
+            <DialogTitle>
+              {errorDuringSubmit ? 'Well shit...' : 'Story submitted!'}
+            </DialogTitle>
           </DialogHeader>
           <DialogBody>
             {errorDuringSubmit ? (
@@ -382,13 +445,13 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
             ) : (
               <Stack>
                 <Text>
-                  Thanks for taking the time to share one of your cherised
-                  memories with Dave!
+                  {`Thanks for taking the time to share one of your cherised
+                  memories with ${soul.firstName}!`}
                 </Text>
                 <Text>
-                  Your story has been submitted. The Baxter family will reach to
-                  you soon via the email address you provided, and will let you
-                  know when the story is being published on the site.
+                  Your story has been submitted. The Baxter family will reach
+                  out to you soon via the email address you provided, and will
+                  let you know when the story is being published on the site.
                 </Text>
                 <Text mt="4">Cheers!</Text>
               </Stack>
@@ -396,10 +459,12 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
           </DialogBody>
           <DialogFooter>
             <DialogActionTrigger asChild>
-              <Button variant="outline">Share another story</Button>
+              <Button variant="outline">
+                {errorDuringSubmit ? 'Try again' : 'Share another story'}
+              </Button>
             </DialogActionTrigger>
-            <Link href={routeMap.soul(soul)}>
-              <Button colorPalette="teal">Read more stoke</Button>
+            <Link href={routeMap.soul(soul.slug)}>
+              <Button colorPalette="teal">Read more Stoke</Button>
             </Link>
           </DialogFooter>
           <DialogCloseTrigger />

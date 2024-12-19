@@ -2,7 +2,8 @@
 export type Story = {
   title: string
   slug: string
-  authorName: string
+  authorFirstName: string
+  authorLastName: string
   soul: Soul
   sections: Array<TextBlock | ImageBlock>
 }
@@ -26,8 +27,10 @@ export type StoryQueryResponse = { story: Story }
 
 /** SOUL TYPES */
 export type Soul = {
-  name: string
+  firstName: string
+  lastName: string
   slug: string
+  emailContactListId?: number
   blurb?: string
   image?: { url: string }
   story: Story[]

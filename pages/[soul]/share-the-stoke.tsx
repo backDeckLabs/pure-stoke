@@ -1,5 +1,6 @@
 import { ContentContainer } from '@/components/layout/ContentContainer'
 import PageWrapper from '@/components/layout/PageWrapper'
+import SeoTags from '@/components/seo/SeoTags'
 import SubmitStoryForm from '@/components/story/SubmitStoryForm'
 import BackLink from '@/components/ui/BackLink'
 import { cmsRequest, throttledCmsRequest } from '@/lib/hygraph'
@@ -7,25 +8,29 @@ import { routeMap } from '@/lib/route-map'
 import {
   ALL_SOULS_QUERY,
   AllSoulPages,
+  getSoulFullName,
   SOUL_PAGE_QUERY,
   SoulLandingPageProps,
 } from '@/lib/soul-page-utils'
 import { SoulQueryResponse } from '@/types/cms-response-types'
+import { Box } from '@chakra-ui/react'
 import { GetStaticPropsContext } from 'next'
-import { useRouter } from 'next/router'
 
 export default function ShareTheStoke({ pageData }: SoulLandingPageProps) {
-  const router = useRouter()
-  const { soul } = router.query
-
   return (
     <PageWrapper>
+      <SeoTags
+        title={'Share the Stoke'}
+        description={`Remember a time you spent with ${pageData.soul.firstName} that made you feel alive, piss your pants laughing, or just plain happy? Share it here!`}
+      />
       <ContentContainer>
         <BackLink
           href={routeMap.soul(pageData.soul.slug)}
-          label={pageData.soul.name}
+          label={getSoulFullName(pageData.soul)}
         />
-        <SubmitStoryForm soul={soul as string} />
+        <Box pt="6" pb="20">
+          <SubmitStoryForm soul={pageData.soul} />
+        </Box>
       </ContentContainer>
     </PageWrapper>
   )
