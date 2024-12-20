@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { ContentContainer } from '@/components/layout/ContentContainer'
 import PageWrapper from '@/components/layout/PageWrapper'
+import FadeImg from '@/components/patterns/FadeImg'
 import SeoTags from '@/components/seo/SeoTags'
 import BackLink from '@/components/ui/BackLink'
 import { cmsRequest, throttledCmsRequest } from '@/lib/hygraph'
@@ -62,11 +63,7 @@ export default function StoryPage({
               const image = section.image
               return (
                 <AspectRatio key={index} ratio={image?.width / image?.height}>
-                  <img
-                    src={image?.url}
-                    alt="A cool image"
-                    style={{ width: '100%', height: '100%' }}
-                  />
+                  <FadeImg src={image?.url} alt="A cool image" />
                 </AspectRatio>
               )
             }

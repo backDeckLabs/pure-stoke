@@ -28,6 +28,7 @@ import { routeMap } from '@/lib/route-map'
 import { Button } from '@/components/ui/button'
 import SeoTags from '@/components/seo/SeoTags'
 import { LuPencil } from 'react-icons/lu'
+import FadeImg from '@/components/patterns/FadeImg'
 
 export default function SoulLandingPage({
   pageData,
@@ -62,10 +63,10 @@ export default function SoulLandingPage({
               overflow="hidden"
               pointerEvents="none"
             >
-              <img
+              <FadeImg
                 src={soulImage}
                 alt={`Picture of ${fullName}`}
-                style={{ width: '100%' }}
+                imgLoading="eager"
               />
             </Box>
           ) : null}
