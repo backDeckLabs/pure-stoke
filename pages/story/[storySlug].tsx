@@ -49,7 +49,7 @@ export default function StoryPage({
           >
             {pageData.story.title}
           </Heading>
-          <Text>By {getAuthorFullname(pageData.story)}</Text>
+          <Text fontSize="2xl">By {getAuthorFullname(pageData.story)}</Text>
         </Center>
       </ContentContainer>
 

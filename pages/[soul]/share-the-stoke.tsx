@@ -28,7 +28,7 @@ export default function ShareTheStoke({ pageData }: SoulLandingPageProps) {
           href={routeMap.soul(pageData.soul.slug)}
           label={getSoulFullName(pageData.soul)}
         />
-        <Box pt="6" pb="20">
+        <Box mt="4">
           <SubmitStoryForm soul={pageData.soul} />
         </Box>
       </ContentContainer>

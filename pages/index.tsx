@@ -23,11 +23,11 @@ export default function Home() {
             Pure Stoke is the vision of the late, great, Dave Baxter. He
             didn&apos;t exactly know what &quot;it&quot; was, but he knew what
             it stood for - a lifestyle of joy, gratitude, and always finding the
-            best in everything.
+            best in everything. A lens through which to experience the world.
           </Text>
           <Text>
-            This site is a tribute to Dave, and a place for all of us to share
-            the Stoke.
+            This site is a living tribute to Dave, and a place for all of us to
+            share the Stoke.
           </Text>
         </Stack>
 

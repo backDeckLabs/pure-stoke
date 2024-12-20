@@ -27,6 +27,7 @@ import {
 import { routeMap } from '@/lib/route-map'
 import { Button } from '@/components/ui/button'
 import SeoTags from '@/components/seo/SeoTags'
+import { LuPencil } from 'react-icons/lu'
 
 export default function SoulLandingPage({
   pageData,
@@ -35,6 +36,7 @@ export default function SoulLandingPage({
   const soulImage = pageData.soul.image?.url
 
   const fullName = getSoulFullName(pageData.soul)
+  const stories = pageData.soul.story
 
   return (
     <PageWrapper>
@@ -85,86 +87,101 @@ export default function SoulLandingPage({
           </Box>
         </Flex>
 
-        <Grid
-          gridTemplateColumns={{
-            base: 'repeat(auto-fill, minmax(325px, 1fr))',
-            xl: 'repeat(3, 1fr)',
-          }}
-          gap="4"
-          mt="6"
-        >
-          {pageData.soul.story.map((story, index) => {
-            const storyImage = getStoryImage(story)
+        {stories.length ? (
+          <Grid
+            gridTemplateColumns={{
+              base: 'repeat(auto-fill, minmax(325px, 1fr))',
+              xl: 'repeat(3, 1fr)',
+            }}
+            gap="4"
+            mt="6"
+          >
+            {stories.map((story, index) => {
+              const storyImage = getStoryImage(story)
 
-            const bgStyles = storyImage
-              ? { bg: 'gray.950' }
-              : {
-                  bg: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
-                  bgSize: '400% 400%',
-                  animation: 'gradientAnimation 7s ease infinite',
-                  animationDelay: 'calc(var(--animation-order) * 0.5s)',
-                }
+              const bgStyles = storyImage
+                ? { bg: 'gray.950' }
+                : {
+                    bg: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
+                    bgSize: '400% 400%',
+                    animation: 'gradientAnimation 7s ease infinite',
+                    animationDelay: 'calc(var(--animation-order) * 0.5s)',
+                  }
 
-            return (
-              <Link
-                key={index}
-                href={routeMap.story(story.slug)}
-                className="text-xl underline"
-              >
-                <Box w="full" borderRadius="4px" overflow="hidden">
-                  <AspectRatio ratio={16 / 9}>
-                    <Flex
-                      w="full"
-                      h="full"
-                      {...bgStyles}
-                      style={
-                        {
-                          '--animation-order': `${index + 10}`,
-                        } as React.CSSProperties
-                      }
-                      align="flex-end"
-                      justify="flex-end"
-                    >
-                      {storyImage && (
-                        <img
-                          src={storyImage}
-                          alt="A cool image"
-                          style={{
-                            position: 'absolute',
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            opacity: 0.8,
-                          }}
-                        />
-                      )}
+              return (
+                <Link
+                  key={index}
+                  href={routeMap.story(story.slug)}
+                  className="text-xl underline"
+                >
+                  <Box w="full" borderRadius="4px" overflow="hidden">
+                    <AspectRatio ratio={16 / 9}>
                       <Flex
-                        direction="column"
-                        justify="flex-end"
-                        position="absolute"
-                        bottom="0"
-                        left="0"
                         w="full"
-                        h="100%"
-                        p="4"
-                        zIndex="1"
-                        bg="linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0) 70%)"
-                        pointerEvents="none"
+                        h="full"
+                        {...bgStyles}
+                        style={
+                          {
+                            '--animation-order': `${index + 10}`,
+                          } as React.CSSProperties
+                        }
+                        align="flex-end"
+                        justify="flex-end"
                       >
-                        <Box color="white">
-                          <Text fontSize="2xl" fontWeight="bold">
-                            {story.title}
-                          </Text>
-                          <Text>By {getAuthorFullname(story)}</Text>
-                        </Box>
+                        {storyImage && (
+                          <img
+                            src={storyImage}
+                            alt="A cool image"
+                            style={{
+                              position: 'absolute',
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'cover',
+                              opacity: 0.8,
+                            }}
+                          />
+                        )}
+                        <Flex
+                          direction="column"
+                          justify="flex-end"
+                          position="absolute"
+                          bottom="0"
+                          left="0"
+                          w="full"
+                          h="100%"
+                          p="4"
+                          zIndex="1"
+                          bg="linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0) 70%)"
+                          pointerEvents="none"
+                        >
+                          <Box color="white">
+                            <Text fontSize="2xl" fontWeight="bold">
+                              {story.title}
+                            </Text>
+                            <Text>By {getAuthorFullname(story)}</Text>
+                          </Box>
+                        </Flex>
                       </Flex>
-                    </Flex>
-                  </AspectRatio>
-                </Box>
-              </Link>
+                    </AspectRatio>
+                  </Box>
+                </Link>
+              )
+            })}
             )
-          })}
-        </Grid>
+          </Grid>
+        ) : (
+          <Center py="10" flexDirection="column" gap="6" mx="auto">
+            <Text fontSize="lg" maxW="500px" textAlign="center">
+              Go ahead, make history! Be the first person to share a story about
+              an awesome experience with {pageData.soul.firstName}
+            </Text>
+            <Link href={routeMap.shareTheStoke(soulSlug)}>
+              <Button variant="subtle">
+                <LuPencil /> Write a story
+              </Button>
+            </Link>
+          </Center>
+        )}
       </ContentContainer>
     </PageWrapper>
   )
