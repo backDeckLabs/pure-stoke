@@ -43,18 +43,23 @@ export default function StoryPage({
           href={routeMap.soul(pageData.story.soul.slug)}
           label={getSoulFullName(pageData.story.soul)}
         />
-        <Center gap="4" flexDir="column">
+        <Center gap="4" flexDir="column" maxW="750px" mx="auto">
           <Heading
             size={{ base: '2xl', md: '4xl', lg: '5xl' }}
             textAlign="center"
           >
             {pageData.story.title}
           </Heading>
-          <Text fontSize="2xl">By {getAuthorFullname(pageData.story)}</Text>
+          <Heading
+            fontSize={{ base: 'md', md: 'md', lg: 'lg' }}
+            color={{ base: 'gray.600', _dark: 'gray.300' }}
+          >
+            By {getAuthorFullname(pageData.story)}
+          </Heading>
         </Center>
       </ContentContainer>
 
-      <ContentContainer text mt="10">
+      <ContentContainer text mt={{ base: 12, md: 16 }}>
         <Stack gap={{ base: 8, md: 12 }}>
           {pageData.story.sections.map((section, index) => {
             if (section.__typename === 'TextBlock') {

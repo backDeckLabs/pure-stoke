@@ -17,6 +17,8 @@ export interface FadeImgProps {
   imgLoading?: 'lazy' | 'eager'
   /** Transition duration in seconds */
   transitionDuration?: number
+  /** Height of the image container */
+  containerHeight?: string
   /** Callback to trigger on load of image */
   onImgLoad?: () => void
 }
@@ -27,9 +29,11 @@ const FadeImg: FC<FadeImgProps> = ({
   style = {},
   imgLoading = 'lazy',
   transitionDuration = 0.4,
+  containerHeight = 'full',
   onImgLoad,
   ...props
 }) => {
+  console.log('containerHeight is: ', containerHeight)
   const imageRef = useRef<HTMLImageElement>(null)
   const [imageLoaded, setImageLoaded] = useState(false)
 
@@ -49,7 +53,7 @@ const FadeImg: FC<FadeImgProps> = ({
   }
 
   return (
-    <Box w="full" h="full">
+    <Box w="full" h={containerHeight}>
       <AnimatePresence mode="wait">
         <motion.div
           initial={{ opacity: 0 }}
