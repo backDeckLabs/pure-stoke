@@ -5,7 +5,7 @@ import { pureStokeSystem } from '@/theme'
 export function Provider(props: ColorModeProviderProps) {
   return (
     <ChakraProvider value={pureStokeSystem}>
-      <ColorModeProvider {...props} />
+      <ColorModeProvider {...props} defaultTheme="dark" />
     </ChakraProvider>
   )
 }
