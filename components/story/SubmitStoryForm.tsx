@@ -33,7 +33,10 @@ import {
 import Link from 'next/link'
 import { routeMap } from '@/lib/route-map'
 import { Alert } from '../ui/alert'
-import { createBrevoContact } from '@/lib/email-api'
+import {
+  createBrevoContact,
+  sendStorySubmittedSystemEmail,
+} from '@/lib/email-api'
 import { Checkbox } from '../ui/checkbox'
 import { Soul } from '@/types/cms-response-types'
 import { CheckedState } from '@zag-js/checkbox'
@@ -166,12 +169,14 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
     )
 
     try {
-      console.log('creating story...')
+      const storySlug = stringToSlug(data.storyTitle)
+
+      // Create story in Hygraph CMS
       await cmsRequest({
         query: CREATE_STORY_MUTATION,
         variables: {
           title: data.storyTitle,
-          slug: stringToSlug(data.storyTitle),
+          slug: storySlug,
           soulSlug: soul.slug,
           authorFirstName: data.authorFirstName,
           authorLastName: data.authorLastName,
@@ -182,6 +187,7 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
         },
       })
 
+      // Subscribe author to email list if they agree
       if (agreeToEmailSignup && soul.emailContactListId) {
         const emailResponse = await createBrevoContact(
           data.authorEmail,
@@ -200,6 +206,15 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
           }
         }
       }
+
+      // Send email to admin notifying of new story submission
+      await sendStorySubmittedSystemEmail({
+        soulSlug: soul.slug,
+        soulName: soul.firstName,
+        storySlug,
+        storyTitle: data.storyTitle,
+        storyAuthor: `${data.authorFirstName} ${data.authorLastName}`,
+      })
 
       resetStoryForm()
     } catch (error) {

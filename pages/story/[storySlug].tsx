@@ -86,7 +86,7 @@ const STORY_QUERY = `
         firstName
         lastName
       }
-      sections {
+      sections(first: 100) {
         ... on TextBlock {
           __typename
           text
