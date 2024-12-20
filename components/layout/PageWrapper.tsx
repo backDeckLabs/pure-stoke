@@ -8,7 +8,11 @@ export interface PageWrapperProps {
 
 const PageWrapper: FC<PageWrapperProps> = ({ children }) => {
   return (
-    <Box py={{ base: '10', md: '16' }} data-test="page-wrapper">
+    <Box
+      pt={{ base: '10', md: '16' }}
+      pb={{ base: '15', md: '20' }}
+      data-test="page-wrapper"
+    >
       {children}
     </Box>
   )

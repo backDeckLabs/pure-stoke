@@ -215,13 +215,13 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
     <Box>
       <Stack gap="4">
         <Heading
-          size={{ base: '2xl', md: '4xl', lg: '5xl' }}
+          size={{ base: '3xl', md: '4xl', lg: '5xl' }}
           textAlign="center"
         >
           Share The Stoke
         </Heading>
         <Box maxW="600px" mx="auto" my="4">
-          <Text fontSize="xl" w="full" textAlign="center">
+          <Text fontSize="2xl" w="full" textAlign="center">
             Ground Rules
           </Text>
           <List.Root
@@ -238,7 +238,7 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
               please do so directly with the Baxter family.
             </List.Item>
             <List.Item>
-              This space is for sharing stories of pure stoke that you
+              This space is for sharing stories of Pure Stoke that you
               experienced with the man, the myth, the legend: Dave Baxter.
             </List.Item>
             <List.Item>
