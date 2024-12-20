@@ -40,6 +40,7 @@ import {
 import { Checkbox } from '../ui/checkbox'
 import { Soul } from '@/types/cms-response-types'
 import { CheckedState } from '@zag-js/checkbox'
+import { isProduction } from '@/lib/env-utils'
 
 const CREATE_STORY_MUTATION = `
   mutation CreateStory(
@@ -187,34 +188,37 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
         },
       })
 
-      // Subscribe author to email list if they agree
-      if (agreeToEmailSignup && soul.emailContactListId) {
-        const emailResponse = await createBrevoContact(
-          data.authorEmail,
-          data.authorFirstName,
-          data.authorLastName,
-          [soul.emailContactListId]
-        )
+      // Email operations for production only
+      if (isProduction()) {
+        // Subscribe author to email list if they agree
+        if (agreeToEmailSignup && soul.emailContactListId) {
+          const emailResponse = await createBrevoContact(
+            data.authorEmail,
+            data.authorFirstName,
+            data.authorLastName,
+            [soul.emailContactListId]
+          )
 
-        const responseError = emailResponse?.error
+          const responseError = emailResponse?.error
 
-        if (responseError) {
-          console.log('error signing up for email list: ', responseError)
+          if (responseError) {
+            console.log('error signing up for email list: ', responseError)
 
-          if (responseError?.body?.code === 'duplicate_parameter') {
-            console.log('email already exists')
+            if (responseError?.body?.code === 'duplicate_parameter') {
+              console.log('email already exists')
+            }
           }
         }
-      }
 
-      // Send email to admin notifying of new story submission
-      await sendStorySubmittedSystemEmail({
-        soulSlug: soul.slug,
-        soulName: soul.firstName,
-        storySlug,
-        storyTitle: data.storyTitle,
-        storyAuthor: `${data.authorFirstName} ${data.authorLastName}`,
-      })
+        // Send email to admin notifying of new story submission
+        await sendStorySubmittedSystemEmail({
+          soulSlug: soul.slug,
+          soulName: soul.firstName,
+          storySlug,
+          storyTitle: data.storyTitle,
+          storyAuthor: `${data.authorFirstName} ${data.authorLastName}`,
+        })
+      }
 
       resetStoryForm()
     } catch (error) {
