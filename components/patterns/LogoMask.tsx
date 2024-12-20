@@ -16,7 +16,6 @@ const LogoMask: FC<LogoMaskProps> = ({
     <Box
       className="logo-container"
       w={width}
-      bgColor={{ base: 'black', _dark: 'white' }}
       css={{
         '&': {
           position: 'relative',

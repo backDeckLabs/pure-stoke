@@ -11,7 +11,7 @@ export const SOUL_PAGE_QUERY = `
       image {
         url(transformation: {image: {resize: {width: 800}}})
       }
-      story(first: 1000) {
+      story(first: 1000, orderBy: publishedAt_DESC) {
         title
         slug
         authorFirstName

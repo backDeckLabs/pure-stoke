@@ -168,7 +168,6 @@ export default function SoulLandingPage({
                 </Link>
               )
             })}
-            )
           </Grid>
         ) : (
           <Center py="10" flexDirection="column" gap="6" mx="auto">

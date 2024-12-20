@@ -33,10 +33,14 @@ import {
 import Link from 'next/link'
 import { routeMap } from '@/lib/route-map'
 import { Alert } from '../ui/alert'
-import { createBrevoContact } from '@/lib/email-api'
+import {
+  createBrevoContact,
+  sendStorySubmittedSystemEmail,
+} from '@/lib/email-api'
 import { Checkbox } from '../ui/checkbox'
 import { Soul } from '@/types/cms-response-types'
 import { CheckedState } from '@zag-js/checkbox'
+import { isProduction } from '@/lib/env-utils'
 
 const CREATE_STORY_MUTATION = `
   mutation CreateStory(
@@ -166,12 +170,14 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
     )
 
     try {
-      console.log('creating story...')
+      const storySlug = stringToSlug(data.storyTitle)
+
+      // Create story in Hygraph CMS
       await cmsRequest({
         query: CREATE_STORY_MUTATION,
         variables: {
           title: data.storyTitle,
-          slug: stringToSlug(data.storyTitle),
+          slug: storySlug,
           soulSlug: soul.slug,
           authorFirstName: data.authorFirstName,
           authorLastName: data.authorLastName,
@@ -182,23 +188,36 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
         },
       })
 
-      if (agreeToEmailSignup && soul.emailContactListId) {
-        const emailResponse = await createBrevoContact(
-          data.authorEmail,
-          data.authorFirstName,
-          data.authorLastName,
-          [soul.emailContactListId]
-        )
+      // Email operations for production only
+      if (isProduction()) {
+        // Subscribe author to email list if they agree
+        if (agreeToEmailSignup && soul.emailContactListId) {
+          const emailResponse = await createBrevoContact(
+            data.authorEmail,
+            data.authorFirstName,
+            data.authorLastName,
+            [soul.emailContactListId]
+          )
 
-        const responseError = emailResponse?.error
+          const responseError = emailResponse?.error
 
-        if (responseError) {
-          console.log('error signing up for email list: ', responseError)
+          if (responseError) {
+            console.log('error signing up for email list: ', responseError)
 
-          if (responseError?.body?.code === 'duplicate_parameter') {
-            console.log('email already exists')
+            if (responseError?.body?.code === 'duplicate_parameter') {
+              console.log('email already exists')
+            }
           }
         }
+
+        // Send email to admin notifying of new story submission
+        await sendStorySubmittedSystemEmail({
+          soulSlug: soul.slug,
+          soulName: soul.firstName,
+          storySlug,
+          storyTitle: data.storyTitle,
+          storyAuthor: `${data.authorFirstName} ${data.authorLastName}`,
+        })
       }
 
       resetStoryForm()

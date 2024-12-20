@@ -42,3 +42,39 @@ export const createBrevoContact = async (
     handleRequestError(e)
   }
 }
+
+/**
+ * Send a system email to Admins when a story is submitted
+ */
+export const sendStorySubmittedSystemEmail = async ({
+  soulName,
+  soulSlug,
+  storySlug,
+  storyTitle,
+  storyAuthor,
+}: {
+  soulName: string
+  soulSlug: string
+  storySlug: string
+  storyTitle: string
+  storyAuthor: string
+}) => {
+  const request = {
+    soulName,
+    soulSlug,
+    storySlug,
+    storyTitle,
+    storyAuthor,
+  }
+
+  try {
+    const response = await fetch('/api/brevoSendDraftSubmittedEmail', {
+      headers,
+      method: 'POST',
+      body: JSON.stringify(request),
+    })
+    return await response.json()
+  } catch (e) {
+    handleRequestError(e)
+  }
+}
