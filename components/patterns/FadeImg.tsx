@@ -33,7 +33,6 @@ const FadeImg: FC<FadeImgProps> = ({
   onImgLoad,
   ...props
 }) => {
-  console.log('containerHeight is: ', containerHeight)
   const imageRef = useRef<HTMLImageElement>(null)
   const [imageLoaded, setImageLoaded] = useState(false)
 

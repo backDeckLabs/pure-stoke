@@ -146,8 +146,6 @@ const SubmitStoryForm: FC<SubmitStoryFormProps> = ({ soul }) => {
           const file = section.value as File
           const imageId = await uploadImage(file)
 
-          console.log('image id is: ', imageId)
-
           // Formatted ImageBlock section json
           return {
             ImageBlock: {
