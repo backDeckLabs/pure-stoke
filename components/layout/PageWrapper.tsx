@@ -10,7 +10,7 @@ const PageWrapper: FC<PageWrapperProps> = ({ children }) => {
   return (
     <Box
       pt={{ base: '10', md: '16' }}
-      pb={{ base: '15', md: '20' }}
+      pb={{ base: '16', md: '20' }}
       data-test="page-wrapper"
     >
       {children}

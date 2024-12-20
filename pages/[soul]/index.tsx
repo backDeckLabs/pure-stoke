@@ -67,6 +67,7 @@ export default function SoulLandingPage({
                 src={soulImage}
                 alt={`Picture of ${fullName}`}
                 imgLoading="eager"
+                containerHeight="auto"
               />
             </Box>
           ) : null}
@@ -130,7 +131,7 @@ export default function SoulLandingPage({
                         justify="flex-end"
                       >
                         {storyImage && (
-                          <img
+                          <FadeImg
                             src={storyImage}
                             alt="A cool image"
                             style={{

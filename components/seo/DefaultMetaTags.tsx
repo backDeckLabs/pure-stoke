@@ -18,8 +18,21 @@ const DefaultMetaTags: FC = () => {
       {/* <meta name="google-site-verification" content="google972c07996b23ef3d" /> */}
       <link rel="preconnect" href="us-west-2.graphassets.com" />
       <link rel="preconnect" href="graphassets.com" />
-      {/* <link rel="icon" href="/favicon.ico" sizes="any" />
-      <link rel="icon" href="/favicon.svg" type="image/svg+xml" /> */}
+      <link
+        rel="icon"
+        type="image/png"
+        href="/assets/favicon-96x96.png"
+        sizes="96x96"
+      />
+      <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+      <link rel="shortcut icon" href="/assets/favicon.ico" />
+      <link
+        rel="apple-touch-icon"
+        sizes="180x180"
+        href="/assets/apple-touch-icon.png"
+      />
+      <meta name="apple-mobile-web-app-title" content={defaultSeo.title} />
+      <link rel="manifest" href="/assets/site.webmanifest" />
       <title key={PsSeoKeys.Title}>{defaultSeo.title}</title>
       <meta
         key={PsSeoKeys.OgTitle}
