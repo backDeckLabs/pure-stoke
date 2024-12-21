@@ -29,5 +29,5 @@ export const truncateString = (
  * Get a random index integer between 0 and the max value
  */
 export const getRandomIndex = (max: number) => {
-  return Math.floor(Math.random() * (max + 1))
+  return Math.floor(Math.random() * max)
 }
