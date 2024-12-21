@@ -7,8 +7,9 @@ import React, { FC } from 'react'
 const DefaultMetaTags: FC = () => {
   const defaultSeo = {
     title: 'Pure Stoke',
-    description: 'Gratitude, every moment possible.',
-    image: '/assets/logos/Logo_dark.jpg',
+    description:
+      'A community driven blog - capturing stories and memories of Dave Baxter and the moments of Pure Stoke he shared with his friends and family.',
+    image: '/assets/logos/Logo_dark.jpeg',
     siteName: 'Pure Stoke',
   }
 
