@@ -11,7 +11,7 @@ export default function Home() {
     <PageWrapper>
       <ContentContainer textAlign="center">
         <Center>
-          <LogoMask width="1000px" />
+          <LogoMask width="1400px" />
         </Center>
 
         <Heading size="2xl" mt="20" mb="15" fontStyle="italic">
