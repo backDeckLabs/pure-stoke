@@ -2,17 +2,22 @@ import { ContentContainer } from '@/components/layout/ContentContainer'
 import PageWrapper from '@/components/layout/PageWrapper'
 import LogoMask from '@/components/patterns/LogoMask'
 import { Button } from '@/components/ui/button'
+import { getRandomIndex } from '@/lib/js-utils'
 import { routeMap } from '@/lib/route-map'
 import { Center, Heading, Stack, Text } from '@chakra-ui/react'
 import Link from 'next/link'
 import { LuArrowRight } from 'react-icons/lu'
 
-export default function Home() {
+export default function Home({
+  logoBackgroundAsset,
+}: {
+  logoBackgroundAsset: string
+}) {
   return (
     <PageWrapper>
       <ContentContainer textAlign="center">
         <Center>
-          <LogoMask width="1300px" />
+          <LogoMask width="1300px" backgroundAsset={logoBackgroundAsset} />
         </Center>
 
         <Heading size="2xl" mt="20" mb="15" fontStyle="italic">
@@ -41,4 +46,24 @@ export default function Home() {
       </ContentContainer>
     </PageWrapper>
   )
+}
+
+const defaultBackgroundAssets = [
+  '/assets/videos/sailing-bg-1.mp4',
+  '/assets/videos/sky-timelapse.mp4',
+  '/assets/videos/surfing-water.mp4',
+  '/assets/videos/ocean-waves-sunset.mp4',
+]
+
+export async function getServerSideProps() {
+  const defaultAssetIndex = getRandomIndex(defaultBackgroundAssets.length)
+  console.log('get index: ', defaultAssetIndex)
+  const backgroundAssetUrl = defaultBackgroundAssets[defaultAssetIndex]
+  console.log('asset: ', backgroundAssetUrl)
+
+  return {
+    props: {
+      logoBackgroundAsset: backgroundAssetUrl,
+    },
+  }
 }

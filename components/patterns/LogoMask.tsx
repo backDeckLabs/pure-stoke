@@ -1,27 +1,39 @@
-import { getRandomIndex } from '@/lib/js-utils'
 import { AspectRatio, Box } from '@chakra-ui/react'
-import React, { FC } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import React, { FC, useEffect, useRef, useState } from 'react'
 
 export interface LogoMaskProps {
   backgroundAsset?: string
   width?: string
 }
 
-const LogoMask: FC<LogoMaskProps> = ({
-  backgroundAsset = '/assets/videos/sailing-bg-1.mp4',
-  width = '600px',
-}) => {
+const LogoMask: FC<LogoMaskProps> = ({ backgroundAsset, width = '600px' }) => {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [videoLoaded, setVideoLoaded] = useState(false)
+  const [clientReady, setClientReady] = useState(false)
+
   const logoAssetPath = '/assets/logos/Logo_vector_dark.svg'
 
-  const defaultBackgroundAssets = [
-    '/assets/videos/sailing-bg-1.mp4',
-    '/assets/videos/sky-timelapse.mp4',
-    '/assets/videos/surfing-water.mp4',
-    '/assets/videos/ocean-waves-sunset.mp4',
-  ]
-  const defaultAssetIndex = getRandomIndex(defaultBackgroundAssets.length)
-  const backgroundAssetUrl =
-    backgroundAsset || defaultBackgroundAssets[defaultAssetIndex]
+  useEffect(() => {
+    setClientReady(true)
+    setTimeout(() => {
+      setVideoLoaded(true)
+    }, 200)
+    console.log('set client to ready')
+  }, [])
+
+  // Set video loaded to handle fade in
+  // useEffect(() => {
+  //   if (!setVideoLoaded && videoRef.current?.complete) {
+  //     setVideoLoaded(true)
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [videoRef.current])
+
+  const handleVideoLoad = (event) => {
+    console.log('video loaded', event)
+    setVideoLoaded(true)
+  }
 
   return (
     <Box
@@ -45,11 +57,23 @@ const LogoMask: FC<LogoMaskProps> = ({
       }}
     >
       <AspectRatio ratio={932 / 268} w="full">
-        {/* Use an image or a video as the background */}
-        <video autoPlay muted loop>
-          <source src={backgroundAssetUrl} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        {clientReady ? (
+          <AnimatePresence mode="wait">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: videoLoaded ? 1 : 0 }}
+              transition={{ duration: 0.4 }}
+              style={{ width: '100%', height: '100%' }}
+            >
+              <video autoPlay muted loop onLoad={handleVideoLoad}>
+                <source src={backgroundAsset} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </motion.div>
+          </AnimatePresence>
+        ) : (
+          <div />
+        )}
       </AspectRatio>
     </Box>
   )
