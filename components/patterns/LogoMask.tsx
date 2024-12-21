@@ -10,28 +10,18 @@ export interface LogoMaskProps {
 const LogoMask: FC<LogoMaskProps> = ({ backgroundAsset, width = '600px' }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [videoLoaded, setVideoLoaded] = useState(false)
-  const [clientReady, setClientReady] = useState(false)
 
   const logoAssetPath = '/assets/logos/Logo_vector_dark.svg'
 
-  useEffect(() => {
-    setClientReady(true)
-    setTimeout(() => {
-      setVideoLoaded(true)
-    }, 200)
-    console.log('set client to ready')
-  }, [])
-
   // Set video loaded to handle fade in
-  // useEffect(() => {
-  //   if (!setVideoLoaded && videoRef.current?.complete) {
-  //     setVideoLoaded(true)
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [videoRef.current])
+  useEffect(() => {
+    if (!videoLoaded && videoRef.current) {
+      setVideoLoaded(true)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [videoRef.current])
 
-  const handleVideoLoad = (event) => {
-    console.log('video loaded', event)
+  const handleVideoLoad = () => {
     setVideoLoaded(true)
   }
 
@@ -57,23 +47,25 @@ const LogoMask: FC<LogoMaskProps> = ({ backgroundAsset, width = '600px' }) => {
       }}
     >
       <AspectRatio ratio={932 / 268} w="full">
-        {clientReady ? (
-          <AnimatePresence mode="wait">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: videoLoaded ? 1 : 0 }}
-              transition={{ duration: 0.4 }}
-              style={{ width: '100%', height: '100%' }}
+        <AnimatePresence mode="wait">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: videoLoaded ? 1 : 0 }}
+            transition={{ duration: 0.4 }}
+            style={{ width: '100%', height: '100%' }}
+          >
+            <video
+              ref={videoRef}
+              autoPlay
+              muted
+              loop
+              onCanPlay={handleVideoLoad}
             >
-              <video autoPlay muted loop onLoad={handleVideoLoad}>
-                <source src={backgroundAsset} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </motion.div>
-          </AnimatePresence>
-        ) : (
-          <div />
-        )}
+              <source src={backgroundAsset} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </motion.div>
+        </AnimatePresence>
       </AspectRatio>
     </Box>
   )

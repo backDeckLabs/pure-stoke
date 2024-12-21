@@ -48,18 +48,17 @@ export default function Home({
   )
 }
 
-const defaultBackgroundAssets = [
+const logoBackgroundVideoBank = [
   '/assets/videos/sailing-bg-1.mp4',
   '/assets/videos/sky-timelapse.mp4',
   '/assets/videos/surfing-water.mp4',
   '/assets/videos/ocean-waves-sunset.mp4',
 ]
 
+// Randomly select a logo background asset for each page load
 export async function getServerSideProps() {
-  const defaultAssetIndex = getRandomIndex(defaultBackgroundAssets.length)
-  console.log('get index: ', defaultAssetIndex)
-  const backgroundAssetUrl = defaultBackgroundAssets[defaultAssetIndex]
-  console.log('asset: ', backgroundAssetUrl)
+  const defaultAssetIndex = getRandomIndex(logoBackgroundVideoBank.length)
+  const backgroundAssetUrl = logoBackgroundVideoBank[defaultAssetIndex]
 
   return {
     props: {
