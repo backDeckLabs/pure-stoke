@@ -7,7 +7,10 @@ export interface LogoMaskProps {
   width?: string
 }
 
-const LogoMask: FC<LogoMaskProps> = ({ backgroundAsset, width = '600px' }) => {
+const LogoMask: FC<LogoMaskProps> = ({
+  backgroundAsset = '/assets/videos/sailing-bg-1.mp4',
+  width = '600px',
+}) => {
   const logoAssetPath = '/assets/logos/Logo_vector_dark.svg'
 
   const defaultBackgroundAssets = [
