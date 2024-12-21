@@ -16,7 +16,7 @@ export const ContentContainer: FC<ContentContainerProps> = ({
   fullScreenWidth = false,
   ...props
 }) => {
-  const maxContainerWidth = text ? '800px' : '1440px'
+  const maxContainerWidth = text ? '70ch' : '1440px'
 
   return (
     <Box

@@ -60,14 +60,22 @@ export default function StoryPage({
       </ContentContainer>
 
       <ContentContainer text mt={{ base: 12, md: 16 }}>
-        <Stack gap={{ base: 8, md: 12 }}>
+        <Stack gap={{ base: 6, md: 10 }}>
           {pageData.story.sections.map((section, index) => {
             if (section.__typename === 'TextBlock') {
-              return <Text key={index}>{section.text}</Text>
+              return (
+                <Text key={index} lineHeight="1.6">
+                  {section.text}
+                </Text>
+              )
             } else if (section.__typename === 'ImageBlock') {
               const image = section.image
               return (
-                <AspectRatio key={index} ratio={image?.width / image?.height}>
+                <AspectRatio
+                  key={index}
+                  ratio={image?.width / image?.height}
+                  my={{ base: 4, md: 6 }}
+                >
                   <FadeImg src={image?.url} alt="A cool image" />
                 </AspectRatio>
               )

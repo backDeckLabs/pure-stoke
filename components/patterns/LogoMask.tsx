@@ -16,6 +16,7 @@ const LogoMask: FC<LogoMaskProps> = ({
     <Box
       className="logo-container"
       w={width}
+      pointerEvents="none"
       css={{
         '&': {
           position: 'relative',
