@@ -82,7 +82,7 @@ export default function SoulLandingPage({
               )}
               <Center mt="10">
                 <Link href={routeMap.shareTheStoke(soulSlug)}>
-                  <Button>Share your story</Button>
+                  <Button size="xl">Share your story</Button>
                 </Link>
               </Center>
             </Stack>

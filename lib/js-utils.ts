@@ -24,3 +24,10 @@ export const truncateString = (
   // Add ellipsis if the string was truncated and ellipsis is desired
   return addEllipsis ? result + '...' : result
 }
+
+/**
+ * Get a random index integer between 0 and the max value
+ */
+export const getRandomIndex = (max: number) => {
+  return Math.floor(Math.random() * max)
+}

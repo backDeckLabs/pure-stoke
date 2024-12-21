@@ -5,13 +5,14 @@ import { Button } from '@/components/ui/button'
 import { routeMap } from '@/lib/route-map'
 import { Center, Heading, Stack, Text } from '@chakra-ui/react'
 import Link from 'next/link'
+import { LuArrowRight } from 'react-icons/lu'
 
 export default function Home() {
   return (
     <PageWrapper>
       <ContentContainer textAlign="center">
         <Center>
-          <LogoMask width="1000px" />
+          <LogoMask width="1300px" />
         </Center>
 
         <Heading size="2xl" mt="20" mb="15" fontStyle="italic">
@@ -32,7 +33,10 @@ export default function Home() {
         </Stack>
 
         <Link href={routeMap.soul('daveydawg')}>
-          <Button mt="10">Davey Dawg</Button>
+          <Button mt="6" size="xl">
+            Davey Dawg
+            <LuArrowRight />
+          </Button>
         </Link>
       </ContentContainer>
     </PageWrapper>
