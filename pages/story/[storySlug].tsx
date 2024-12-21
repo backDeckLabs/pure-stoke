@@ -64,7 +64,11 @@ export default function StoryPage({
           {pageData.story.sections.map((section, index) => {
             if (section.__typename === 'TextBlock') {
               return (
-                <Text key={index} lineHeight="1.6">
+                <Text
+                  key={index}
+                  lineHeight="1.6"
+                  fontSize={{ base: 'md', md: 'lg' }}
+                >
                   {section.text}
                 </Text>
               )
