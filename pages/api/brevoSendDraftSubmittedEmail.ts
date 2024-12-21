@@ -35,7 +35,7 @@ const brevoSendStorySubmittedApi = async (
         <h3>Title: {{params.storyTitle}}</h3>
         <h3>Author: {{params.storyAuthor}}</h3>
         <p>
-          <a href="https://staging--purestoke.netlify.app/story/{{params.storySlug}}" target="_blank">
+          <a href="https://staging--purestoke.netlify.app/api/preview?secret=stokeret&slug=/story/{{params.storySlug}}" target="_blank">
             View Staging Preview
           </a>
         </p>
