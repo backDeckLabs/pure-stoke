@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { ContentContainer } from '@/components/layout/ContentContainer'
 import PageWrapper from '@/components/layout/PageWrapper'
+import BodyCopy from '@/components/patterns/BodyCopy'
 import FadeImg from '@/components/patterns/FadeImg'
 import SeoTags from '@/components/seo/SeoTags'
 import BackLink from '@/components/ui/BackLink'
@@ -63,15 +64,7 @@ export default function StoryPage({
         <Stack gap={{ base: 6, md: 10 }}>
           {pageData.story.sections.map((section, index) => {
             if (section.__typename === 'TextBlock') {
-              return (
-                <Text
-                  key={index}
-                  lineHeight="1.6"
-                  fontSize={{ base: 'md', md: 'lg' }}
-                >
-                  {section.text}
-                </Text>
-              )
+              return <BodyCopy key={index} copy={section.text} />
             } else if (section.__typename === 'ImageBlock') {
               const image = section.image
               return (

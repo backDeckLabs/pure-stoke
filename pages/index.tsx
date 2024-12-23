@@ -1,5 +1,6 @@
 import { ContentContainer } from '@/components/layout/ContentContainer'
 import PageWrapper from '@/components/layout/PageWrapper'
+import BodyCopy from '@/components/patterns/BodyCopy'
 import LogoMask from '@/components/patterns/LogoMask'
 import { Button } from '@/components/ui/button'
 import { routeMap } from '@/lib/route-map'
@@ -8,6 +9,12 @@ import Link from 'next/link'
 import { LuArrowRight } from 'react-icons/lu'
 
 export default function Home() {
+  const homePageCopy = `
+  Pure Stoke is the vision of the late, great, Dave Baxter. He didn't exactly know what "it" was, but he knew what it stood for - a lifestyle of joy, gratitude, and always finding the best in everything. A lens through which to experience the world.
+
+  This site is a living tribute to Dave, and a place for all of us to share the Stoke.
+  `
+
   return (
     <PageWrapper>
       <ContentContainer textAlign="center">
@@ -19,8 +26,9 @@ export default function Home() {
           A community driven storytelling space
         </Heading>
 
-        <Stack my="10" maxW="600px" mx="auto" textAlign="left" gap="6">
-          <Text>
+        <Stack my="10" maxW="650px" mx="auto" textAlign="left" gap="6">
+          <BodyCopy copy={homePageCopy} />
+          {/* <Text>
             Pure Stoke is the vision of the late, great, Dave Baxter. He
             didn&apos;t exactly know what &quot;it&quot; was, but he knew what
             it stood for - a lifestyle of joy, gratitude, and always finding the
@@ -29,7 +37,7 @@ export default function Home() {
           <Text>
             This site is a living tribute to Dave, and a place for all of us to
             share the Stoke.
-          </Text>
+          </Text> */}
         </Stack>
 
         <Link href={routeMap.soul('daveydawg')}>
