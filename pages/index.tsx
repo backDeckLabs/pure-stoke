@@ -4,7 +4,7 @@ import BodyCopy from '@/components/patterns/BodyCopy'
 import LogoMask from '@/components/patterns/LogoMask'
 import { Button } from '@/components/ui/button'
 import { routeMap } from '@/lib/route-map'
-import { Center, Heading, Stack, Text } from '@chakra-ui/react'
+import { Center, Heading, Stack } from '@chakra-ui/react'
 import Link from 'next/link'
 import { LuArrowRight } from 'react-icons/lu'
 

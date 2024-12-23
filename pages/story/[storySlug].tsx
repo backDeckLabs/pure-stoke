@@ -14,7 +14,7 @@ import {
   getStoryImage,
 } from '@/lib/soul-page-utils'
 import { StoryQueryResponse } from '@/types/cms-response-types'
-import { AspectRatio, Center, Heading, Stack, Text } from '@chakra-ui/react'
+import { AspectRatio, Center, Heading, Stack } from '@chakra-ui/react'
 import { GetStaticPropsContext } from 'next'
 
 export default function StoryPage({
