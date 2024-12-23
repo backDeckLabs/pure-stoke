@@ -1,6 +1,9 @@
 import { Text } from '@chakra-ui/react'
 import React, { FC } from 'react'
 
+/**
+ * Display body copy formatted for legibility
+ */
 export interface BodyCopyProps {
   /** Copy to display in the component. Line breaks are respected when rendering */
   copy: string
