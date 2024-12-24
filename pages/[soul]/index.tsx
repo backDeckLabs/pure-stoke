@@ -157,7 +157,12 @@ export default function SoulLandingPage({
                           pointerEvents="none"
                         >
                           <Box color="white">
-                            <Text fontSize="2xl" fontWeight="bold">
+                            <Text
+                              fontSize="2xl"
+                              fontWeight="bold"
+                              lineHeight="1.2"
+                              mb="2"
+                            >
                               {story.title}
                             </Text>
                             <Text>By {getAuthorFullname(story)}</Text>

@@ -44,5 +44,5 @@ export const throttledCmsRequest = <T>(
     return data
   })()
 
-/** Max 5 requests per seconds, per Hygraph API rate limiting */
-const throttle = pThrottle({ limit: 3, interval: 1000 })
+/** Max requests per second, per Hygraph API rate limiting */
+const throttle = pThrottle({ limit: 2, interval: 1000 })
